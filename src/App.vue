@@ -13,6 +13,7 @@ import TheWelcome from './components/TheWelcome.vue'
   </header>
 
   <main>
+    <h1 class="text-red-900">hello world</h1>
     <TheWelcome />
   </main>
 </template>
