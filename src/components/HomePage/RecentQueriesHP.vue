@@ -1,12 +1,8 @@
 <template>
-    <HeroSectionHP/>
+    
 </template>
 <script>
-import HeroSectionHP from '@/components/HomePage/HeroSectionHP.vue';
     export default{
-        components:{
-            HeroSectionHP,
-        },
         data(){
             return{
                 
