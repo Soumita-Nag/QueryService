@@ -1,24 +1,15 @@
 <template>
-    <HeroSectionHP/>
+    <HeroSectionHP @activate="passToApp"/>
     <RecentQueriesHP/>
 </template>
-<script>
+<script setup>
 import HeroSectionHP from '@/components/HomePage/HeroSectionHP.vue';
 import RecentQueriesHP from '@/components/HomePage/RecentQueriesHP.vue';
-    export default{
-        components:{
-            HeroSectionHP,
-            RecentQueriesHP
-        },
-        data(){
-            return{
-                
-            }
-        },
-        methods:{
-            
-        },
-    }
+
+const emit=defineEmits(['activate']);
+const passToApp=(value,source)=>{
+    emit('activate',value,source);
+}
 </script>
 <style scoped>
     
