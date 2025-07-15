@@ -1,18 +1,22 @@
 <template>
-    <div class="flex flex-col items-center mt-10 sm:mx-5 mx-2 xl:mx-15 lg:mx-10">
-        <div><h1 class="text-3xl font-bold">Recent Queires</h1></div>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-10">
-            <div v-for="i in 10" class="border p-2">
-                <div>{{ this.recentQuries.date }}</div>
-                <div>Q. {{ this.recentQuries.query }}</div>
-                <div class="truncate overflow-hidden whitespace-nowrap">Ans. {{ this.recentQuries.ans }}</div>
-                <div>{{ this.recentQuries.ansCount }}</div>
-            </div>
+  <div class="flex flex-col items-center mt-10 sm:mx-5 mx-2 xl:mx-15 lg:mx-10">
+    <div><h1 class="text-3xl font-bold mb-6">Recent Queries</h1></div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 w-full">
+      <div
+        v-for="i in 10"
+        :key="i"
+        class="bg-white shadow-md rounded-xl p-4 border border-gray-200 transition-all hover:scale-105 hover:shadow-xl cursor-pointer"
+      >
+        <div class="text-sm text-gray-500 mb-2">{{ recentQuries.date }}</div>
+        <div class="font-semibold mb-1">Q. {{ recentQuries.query }}</div>
+        <div class="text-gray-700 text-sm truncate mb-2">
+          Ans. {{ recentQuries.ans }}
         </div>
-        <!-- <div>
-            <div></div>
-        </div> -->
+        <div class="text-xs text-gray-500">Answers: {{ recentQuries.ansCount }}</div>
+      </div>
     </div>
+  </div>
 </template>
 <script>
     export default{
