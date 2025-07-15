@@ -1,32 +1,37 @@
 <template>
-    <div class="sm:mx-5 mx-2 xl:mx-15 lg:mx-10 flex flex-col items-center">
-        <div class="w-full hidden md:block shadow-2xl">
-            <img src="@/assets/DeWatermark.ai_1751779242509.jpeg" class="w-full h-150" alt="">
-        </div>
-        <div class="w-full sm:hidden shadow-2xl">
-            <img src="@/assets/DeWatermark.ai_1751779242509(1).jpeg" class="w-full h-150" alt="">
-        </div>
-        <div class="w-full hidden sm:block md:hidden shadow-2xl">
-            <img src="@/assets/DeWatermark.ai_1751779242509(2).jpeg" class="w-full h-150" alt="">
-        </div>
-        <div class="absolute top-68 sm:top-75 text-white flex flex-col items-center w-1/2 text-center">
-            <h1 class="text-3xl font-bold pb-5">AskHive</h1>
-            <h2 class="text-lg font-bold italic pb-1">Ask. Answer. Learn — One Query at a Time.</h2>
-            <h6 class="text-sm">A dedicated space to ask questions across domains and get reliable, reviewed answers from real people. Every response is verified by our admin for quality.</h6>
-            <button class="border px-2 py-1 rounded-xl mt-5 cursor-pointer">Ask Queries</button>
-        </div>
+  <div class="relative w-full">
+    <div class="hidden md:block">
+      <img src="@/assets/DeWatermark.ai_1751779242509.jpeg" class="w-full h-[85vh] object-cover" alt="Hero Image">
     </div>
+    <div class="hidden sm:block md:hidden">
+      <img src="@/assets/DeWatermark.ai_1751779242509(2).jpeg" class="w-full h-[75vh] object-cover" alt="Hero Image Tablet">
+    </div>
+    <div class="sm:hidden">
+      <img src="@/assets/DeWatermark.ai_1751779242509(1).jpeg" class="w-full h-[60vh] object-cover" alt="Hero Image Mobile">
+    </div>
+
+    <div class="absolute inset-0 flex flex-col items-center justify-center px-4 sm:px-10 text-center bg-black/40">
+      <h1 class="text-white text-4xl sm:text-5xl font-bold mb-4 drop-shadow-lg">AskHive</h1>
+      <h2 class="text-white text-xl sm:text-2xl italic font-semibold mb-2 drop-shadow-md">
+        Ask. Answer. Learn — One Query at a Time.
+      </h2>
+      <p class="text-white text-sm sm:text-base max-w-2xl drop-shadow-md">
+        A dedicated space to ask questions across domains and get reliable, reviewed answers from real people. Every response is verified by our admin for quality.
+      </p>
+      <button
+        @click="goToAskQueries"
+        class="mt-6 px-6 py-2 bg-blue-600 hover:bg-blue-700 cursor-pointer text-white rounded-full transition duration-300 shadow-md"
+      >
+        Ask Queries
+      </button>
+    </div>
+  </div>
 </template>
-<script>
-    export default{
-        data(){
-            return{
-                
-            }
-        },
-        methods:{
-            
-        },
+
+<script setup>
+    const emit=defineEmits(['activate'])
+    const goToAskQueries=()=>{
+        emit('activate',true,'AskQueries');
     }
 </script>
 <style scoped>
