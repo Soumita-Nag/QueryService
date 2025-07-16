@@ -9,6 +9,9 @@
       <span class="hover:text-green-600 cursor-pointer transition-colors" @click="showLogin">Login</span>
       <span class="hover:text-green-600 cursor-pointer transition-colors" @click="showSignup">Signup</span>
     </div>
+    <div class="flex gap-6 text-gray-700 font-medium text-base" v-show="props.islogin">
+      <span class=" capitalize text-xl">{{ props.user.uname }}</span>
+    </div>
   </nav>
 </template>
 
@@ -16,6 +19,7 @@
 import { defineProps } from 'vue';
     const props=defineProps({
         islogin:Boolean,
+        user:Array,
     })
     const emit=defineEmits(['activate']);
     const showHome=()=>{
