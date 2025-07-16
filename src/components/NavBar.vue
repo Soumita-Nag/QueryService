@@ -5,7 +5,7 @@
       <span @click="showAbout" class="hover:text-blue-600 cursor-pointer transition-colors">About Us</span>
       <span @click="showContact" class="hover:text-blue-600 cursor-pointer transition-colors">Contact Us</span>
     </div>
-    <div class="flex gap-6 text-gray-700 font-medium text-base">
+    <div class="flex gap-6 text-gray-700 font-medium text-base" v-show="!props.islogin">
       <span class="hover:text-green-600 cursor-pointer transition-colors" @click="showLogin">Login</span>
       <span class="hover:text-green-600 cursor-pointer transition-colors" @click="showSignup">Signup</span>
     </div>
@@ -13,6 +13,10 @@
 </template>
 
 <script setup>
+import { defineProps } from 'vue';
+    const props=defineProps({
+        islogin:Boolean,
+    })
     const emit=defineEmits(['activate']);
     const showHome=()=>{
         emit('activate',true,'HomePage');

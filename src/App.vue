@@ -6,7 +6,7 @@
   import Signup from './components/Signup.vue';
 
   import { reactive,ref } from 'vue';
-  const islogin=ref(true);
+  const islogin=ref(false);
   const visibility=reactive({
     HomePage:true,
     AskQueries:false,
@@ -34,7 +34,7 @@
 <template>
   <div class="relative min-h-screen">
     <div :class="{'blur-sm pointer-events-none':visibility.Login || visibility.Signup}">
-      <NavBar @activate="changeVisibility"/>
+      <NavBar @activate="changeVisibility" :islogin="islogin"/>
       <HomePage @activate="changeVisibility" v-if="visibility.HomePage" :islogin="islogin"/>
       <askQueries v-if="visibility.AskQueries"/>
     </div>

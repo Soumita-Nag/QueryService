@@ -31,7 +31,7 @@
         />
       </div>
 
-      <div class="mb-6">
+      <div class="mb-4">
         <label for="pwd" class="block text-gray-600 mb-1">Password</label>
         <input
           type="password"
@@ -41,7 +41,10 @@
           required
         />
       </div>
-
+      <div class="flex gap-1 mb-4">
+        <p class="text-sm">Already have an account? </p>
+        <a @click="showLogin" class="text-[16px] text-blue-700 cursor-pointer">login</a>
+      </div>
       <button
         type="submit"
         class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded transition duration-300"
@@ -58,6 +61,10 @@ const submitSignup = () => {
 };
 const closeModal=()=>{
     emit('activate',false,'Signup');
+}
+const showLogin=()=>{
+    emit('activate',false,'Signup');
+    emit('activate',true,'Login');
 }
 </script>
 <style scoped></style>
