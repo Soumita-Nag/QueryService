@@ -2,9 +2,9 @@
   <div class="flex justify-center">
     <form
       @submit.prevent="submitLogin"
-      class="w-full max-w-md bg-white shadow-lg rounded-lg p-8 mt-20 h-90"
+      class="w-full max-w-md bg-white shadow-lg rounded-lg px-8 mt-20 h-94"
     >
-        <button @click="closeModal" class="text-3xl absolute cursor-pointer left-218 top-58 text-gray-800 hover:text-red-600">&times;</button>
+        <button @click="closeModal" class="text-3xl cursor-pointer relative left-63 text-gray-600 hover:text-red-600">&times;</button>
       <h2 class="text-2xl font-bold mb-6 text-center text-gray-700">
         Login
       </h2>
