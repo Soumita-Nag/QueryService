@@ -4,6 +4,7 @@
       @submit.prevent="submitSignup"
       class="w-full max-w-md bg-white shadow-lg rounded-lg p-8 mt-20 h-110"
     >
+        <button @click="closeModal" class="text-3xl absolute cursor-pointer left-218 top-48 text-gray-800 hover:text-red-600">&times;</button>
       <h2 class="text-2xl font-bold mb-6 text-center text-gray-700">
         Create an Account
       </h2>
@@ -55,5 +56,8 @@ const emit=defineEmits(['activate']);
 const submitSignup = () => {
   emit('activate',false,'Signup');
 };
+const closeModal=()=>{
+    emit('activate',false,'Signup');
+}
 </script>
 <style scoped></style>

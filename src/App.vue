@@ -32,11 +32,19 @@
 </script>
 
 <template>
-  <NavBar @activate="changeVisibility"/>
-  <HomePage @activate="changeVisibility" v-if="visibility.HomePage"/>
-  <askQueries v-if="visibility.AskQueries"/>
-  <Login @activate="changeVisibility" v-if="visibility.Login"/>
-  <Signup @activate="changeVisibility" v-if="visibility.Signup"/>
+  <div class="relative min-h-screen">
+    <div :class="{'blur-sm pointer-events-none':visibility.Login || visibility.Signup}">
+      <NavBar @activate="changeVisibility"/>
+      <HomePage @activate="changeVisibility" v-if="visibility.HomePage"/>
+      <askQueries v-if="visibility.AskQueries"/>
+    </div>
+    <div v-if="visibility.Login" class="fixed inset-0 bg-black opacity-80 flex justify-center items-center z-50">
+      <Login @activate="changeVisibility"/>
+    </div>
+    <div v-if="visibility.Signup" class="fixed inset-0 bg-black opacity-80 flex justify-center items-center z-50">
+      <Signup @activate="changeVisibility"/>
+    </div>
+  </div>
 </template>
 
 <style scoped>
