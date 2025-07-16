@@ -5,8 +5,8 @@
   import Login from './components/Login.vue';
   import Signup from './components/Signup.vue';
 
-  import { reactive } from 'vue';
-  
+  import { reactive,ref } from 'vue';
+  const islogin=ref(true);
   const visibility=reactive({
     HomePage:true,
     AskQueries:false,
@@ -35,7 +35,7 @@
   <div class="relative min-h-screen">
     <div :class="{'blur-sm pointer-events-none':visibility.Login || visibility.Signup}">
       <NavBar @activate="changeVisibility"/>
-      <HomePage @activate="changeVisibility" v-if="visibility.HomePage"/>
+      <HomePage @activate="changeVisibility" v-if="visibility.HomePage" :islogin="islogin"/>
       <askQueries v-if="visibility.AskQueries"/>
     </div>
     <div v-if="visibility.Login" class="fixed inset-0 bg-black opacity-80 flex justify-center items-center z-50">

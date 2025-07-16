@@ -29,9 +29,17 @@
 </template>
 
 <script setup>
+  import { defineProps } from 'vue';
+  
     const emit=defineEmits(['activate'])
+    const props=defineProps({
+      islogin:Boolean,
+    })
     const goToAskQueries=()=>{
+        if(props.islogin)
         emit('activate',true,'AskQueries');
+        else
+        emit('activate',true,'Login');
     }
 </script>
 <style scoped>
