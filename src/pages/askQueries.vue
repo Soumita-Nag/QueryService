@@ -13,7 +13,7 @@ import AskQueryForm from '@/components/AskQueries/AskQueryForm.vue';
 import SideBar from '@/components/AskQueries/SideBar.vue';
 import { defineProps } from 'vue';
 const props=defineProps({
-    user:Array,
+    user:Object,
 })
 </script>
 <style scoped>

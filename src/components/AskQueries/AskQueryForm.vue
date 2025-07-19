@@ -36,7 +36,7 @@ import { defineProps } from 'vue';
 var category="Select Category";
 var question="";
 const props=defineProps({
-    user:Array,
+    user:Object,
 })
 const AddQuery=()=>{
     alert(category+" "+question)

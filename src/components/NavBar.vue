@@ -19,7 +19,7 @@
 import { defineProps } from 'vue';
     const props=defineProps({
         islogin:Boolean,
-        user:Array,
+        user:Object,
     })
     const emit=defineEmits(['activate']);
     const showHome=()=>{

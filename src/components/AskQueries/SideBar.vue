@@ -1,6 +1,6 @@
 <template>
   <div :class="['h-[92vh] bg-white shadow-xl p-4 fixed top-18 transition-all duration-300',isCollapsed ? 'w-10' : 'overflow-scroll w-64']">
-    <button @click="toggleSidebar" class="absolute top-2 right-2 bg-gray-300 hover:bg-gray-400 p-1 pt-0 rounded-full transition cursor-pointer w-6 text-xl" title="Toggle Sidebar">
+    <button @click="toggleSidebar" class="bg-gray-300 transition-all duration-300 hover:bg-gray-400 p-1 pt-0 rounded-full cursor-pointer w-6 text-xl" :class="!isCollapsed?['fixed top-22 left-53']:['fixed top-22 left-2']" title="Toggle Sidebar">
       <span v-if="!isCollapsed">«</span>
       <span v-else>»</span>
     </button>
