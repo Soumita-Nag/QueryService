@@ -1,5 +1,5 @@
 <template>
-  <div class="relative w-full">
+  <div class="relative w-full pt-18">
     <div class="hidden md:block">
       <img src="@/assets/DeWatermark.ai_1751779242509.jpeg" class="w-full h-[85vh] object-cover" alt="Hero Image">
     </div>

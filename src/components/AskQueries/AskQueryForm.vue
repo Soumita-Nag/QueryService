@@ -1,5 +1,5 @@
 <template>
-  <div class="max-w-xl mx-auto mt-10 p-6 bg-white rounded-xl shadow-lg">
+  <div class="max-w-xl mx-auto p-6 mt-28 bg-white rounded-xl shadow-lg">
     <form @submit.prevent="AddQuery" class="space-y-6">
       <div class="text-lg font-semibold text-gray-700 capitalize">
         Hello {{ props.user.uname }} 👋
@@ -18,7 +18,7 @@
       </div>
       <div>
         <label for="question" class="block mb-2 text-sm font-medium text-gray-600">Your Question</label>
-        <textarea name="" v-model="question" id="question" placeholder="Ask Your Question" class="w-full min-h-40 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400">
+        <textarea name="" v-model="question" id="question" placeholder="Ask Your Question" class="w-full min-h-40 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400" required>
 
         </textarea>
       </div>

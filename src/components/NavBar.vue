@@ -1,5 +1,5 @@
 <template>
-  <nav class="flex justify-between items-center px-8 py-4 bg-white shadow-md rounded-lg m-4">
+  <nav class="flex justify-between items-center px-8 py-4 bg-white shadow-md h-18 w-full fixed z-50">
     <div class="flex gap-8 text-gray-700 font-medium text-base">
       <span @click="showHome" class="hover:text-blue-600 cursor-pointer transition-colors">Home</span>
       <span @click="showAbout" class="hover:text-blue-600 cursor-pointer transition-colors">About Us</span>
