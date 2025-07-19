@@ -40,7 +40,7 @@
     <div :class="{'blur-sm pointer-events-none':visibility.Login || visibility.Signup}">
       <NavBar @activate="changeVisibility" :islogin="islogin" :user="user"/>
       <HomePage @activate="changeVisibility" v-if="visibility.HomePage" :islogin="islogin"/>
-      <askQueries v-if="visibility.AskQueries"/>
+      <askQueries v-if="visibility.AskQueries" :user="user"/>
     </div>
     <div v-if="visibility.Login" class="fixed inset-0 bg-black opacity-80 flex justify-center items-center z-50">
       <Login @activate="changeVisibility"/>

@@ -1,17 +1,14 @@
 <template>
-    <h1>Hello from askQueries</h1>
+    <div class="p-4">
+        <AskQueryForm :user="props.user"/>
+    </div>
 </template>
-<script>
-    export default{
-        data(){
-            return{
-                
-            }
-        },
-        methods:{
-            
-        },
-    }
+<script setup>
+import AskQueryForm from '@/components/AskQueries/AskQueryForm.vue';
+import { defineProps } from 'vue';
+const props=defineProps({
+    user:Array,
+})
 </script>
 <style scoped>
     
