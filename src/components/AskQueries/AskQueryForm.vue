@@ -1,5 +1,5 @@
 <template>
-  <div class="max-w-xl mx-auto p-6 mt-28 bg-white rounded-xl shadow-lg">
+  <div class="max-w-xl sm:mx-auto p-6 mt-28 ml-10 bg-white rounded-xl shadow-lg">
     <form @submit.prevent="AddQuery" class="space-y-6">
       <div class="text-lg font-semibold text-gray-700 capitalize">
         Hello {{ props.user.uname }} 👋
