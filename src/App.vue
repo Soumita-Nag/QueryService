@@ -6,9 +6,9 @@
   import Signup from './components/Signup.vue';
 
   import { reactive,ref } from 'vue';
-  const islogin=ref(false);
-  const user=ref({
-    uname:"soumita",
+  var user=reactive({
+    islogin:false,
+    uname:"soumi",
     email:"nagsoumita04@gmail.com",
   })
   const visibility=reactive({
@@ -34,7 +34,6 @@
     }
   }
   const checkLogin=(uId)=>{
-    // alert(uId.email+" "+uId.password);
     $.ajax({
       url:"http://localhost:8000/login",
       method:"POST",
@@ -43,8 +42,12 @@
         email:uId.email,
         password:uId.password
       }),
-      success: (data)=>{
-        console.log("Success: "+data);
+      success: (data,txtstatus,jqXHR)=>{
+        if(jqXHR.status==200){
+          user.islogin=true;
+          user.email=data[0].email;
+          user.uname=data[0].uname;
+        }
       },
       error: (err)=>{
         console.log("Error: "+err);
@@ -52,7 +55,6 @@
     })
   }
   const createAccount=(uId)=>{
-    // alert(uId.uname+" "+uId.email+" "+uId.password);
     $.ajax({
       url:"http://localhost:8000/signup",
       method:"POST",
@@ -75,8 +77,8 @@
 <template>
   <div class="relative min-h-screen">
     <div :class="{'blur-sm pointer-events-none':visibility.Login || visibility.Signup}">
-      <NavBar @activate="changeVisibility" :islogin="islogin" :user="user"/>
-      <HomePage @activate="changeVisibility" v-if="visibility.HomePage" :islogin="islogin"/>
+      <NavBar @activate="changeVisibility" :islogin="user.islogin" :user="user"/>
+      <HomePage @activate="changeVisibility" v-if="visibility.HomePage" :islogin="user.islogin"/>
       <askQueries v-if="visibility.AskQueries" :user="user"/>
     </div>
     <div v-if="visibility.Login" class="fixed inset-0 bg-black opacity-80 flex justify-center items-center z-50">
