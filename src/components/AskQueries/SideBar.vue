@@ -88,7 +88,7 @@ const questions = [
         status: 'pending',
     },
 ]
-const isCollapsed = ref(false)
+const isCollapsed = ref(true)
 
 const toggleSidebar = () => {
   isCollapsed.value = !isCollapsed.value

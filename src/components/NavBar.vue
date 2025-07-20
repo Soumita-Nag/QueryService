@@ -21,7 +21,7 @@ import { defineProps } from 'vue';
         islogin:Boolean,
         user:Object,
     })
-    const emit=defineEmits(['activate']);
+    const emit=defineEmits(['activate','uId']);
     const showHome=()=>{
         emit('activate',true,'HomePage');
     }

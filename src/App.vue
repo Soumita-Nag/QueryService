@@ -6,7 +6,7 @@
   import Signup from './components/Signup.vue';
 
   import { reactive,ref } from 'vue';
-  const islogin=ref(true);
+  const islogin=ref(false);
   const user=ref({
     uname:"soumita",
     email:"nagsoumita04@gmail.com",
@@ -33,6 +33,12 @@
       visibility.Login=newVisibility;
     }
   }
+  const checkLogin=(uId)=>{
+    alert(uId.email+" "+uId.password);
+  }
+  const createAccount=(uId)=>{
+    alert(uId.uname+" "+uId.email+" "+uId.password);
+  }
 </script>
 
 <template>
@@ -43,10 +49,10 @@
       <askQueries v-if="visibility.AskQueries" :user="user"/>
     </div>
     <div v-if="visibility.Login" class="fixed inset-0 bg-black opacity-80 flex justify-center items-center z-50">
-      <Login @activate="changeVisibility"/>
+      <Login @activate="changeVisibility" @uId="checkLogin"/>
     </div>
     <div v-if="visibility.Signup" class="fixed inset-0 bg-black opacity-80 flex justify-center items-center z-50">
-      <Signup @activate="changeVisibility"/>
+      <Signup @activate="changeVisibility" @uId="createAccount"/>
     </div>
   </div>
 </template>
