@@ -34,10 +34,41 @@
     }
   }
   const checkLogin=(uId)=>{
-    alert(uId.email+" "+uId.password);
+    // alert(uId.email+" "+uId.password);
+    $.ajax({
+      url:"http://localhost:8000/login",
+      method:"POST",
+      contentType:"application/json",
+      data: JSON.stringify({
+        email:uId.email,
+        password:uId.password
+      }),
+      success: (data)=>{
+        console.log("Success: "+data);
+      },
+      error: (err)=>{
+        console.log("Error: "+err);
+      }
+    })
   }
   const createAccount=(uId)=>{
-    alert(uId.uname+" "+uId.email+" "+uId.password);
+    // alert(uId.uname+" "+uId.email+" "+uId.password);
+    $.ajax({
+      url:"http://localhost:8000/signup",
+      method:"POST",
+      contentType:"application/json",
+      data: JSON.stringify({
+        uname:uId.uname,
+        email:uId.email,
+        password:uId.password
+      }),
+      success: (data)=>{
+        console.log("Success: "+data);
+      },
+      error: (err)=>{
+        console.log("Error: "+err);
+      }
+    })
   }
 </script>
 
