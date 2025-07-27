@@ -2,7 +2,7 @@
   <nav class="flex justify-between items-center px-8 py-4 bg-white shadow-md h-18 w-full fixed z-50">
     <div class="flex gap-8 text-gray-700 font-medium text-base">
       <span @click="showHome" class="hover:text-blue-600 cursor-pointer transition-colors">Home</span>
-      <span @click="showAbout" class="hover:text-blue-600 cursor-pointer transition-colors">About Us</span>
+      <span @click="showQuestions" class="hover:text-blue-600 cursor-pointer transition-colors">Questions</span>
       <span @click="showContact" class="hover:text-blue-600 cursor-pointer transition-colors">Contact Us</span>
     </div>
     <div class="flex gap-6 text-gray-700 font-medium text-base" v-show="!props.islogin">
@@ -10,7 +10,7 @@
       <span class="hover:text-green-600 cursor-pointer transition-colors" @click="showSignup">Signup</span>
     </div>
     <div class="flex gap-6 text-gray-700 font-medium text-base" v-show="props.islogin">
-      <span class=" capitalize text-xl">{{ props.user.uname }}</span>
+      <span class=" capitalize text-xl cursor-pointer hover:text-green-500 transition-colors">{{ props.user.uname }}</span>
     </div>
   </nav>
 </template>
@@ -30,6 +30,9 @@ import { defineProps } from 'vue';
     }
     const showLogin=()=>{
         emit('activate',true,'Login');
+    }
+    const showQuestions=()=>{
+      emit('activate',true,'Questions');
     }
 </script>
 <style scoped>

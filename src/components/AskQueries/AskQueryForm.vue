@@ -17,6 +17,10 @@
         </select>
       </div>
       <div>
+        <label for="questionHead" class="block mb-2 text-sm font-medium text-gray-600">Question Title</label>
+        <input type="text" name="" v-model="questionHead" id="questionHead" placeholder="Enter the Title of your Question" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400" required>
+      </div>
+      <div>
         <label for="question" class="block mb-2 text-sm font-medium text-gray-600">Your Question</label>
         <textarea name="" v-model="question" id="question" placeholder="Ask Your Question" class="w-full min-h-40 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400" required>
 
@@ -32,9 +36,10 @@
 </template>
 
 <script setup>
-import { defineProps } from 'vue';
+import { defineProps, ref } from 'vue';
 var category="Select Category";
-var question="";
+var question=ref("");
+var questionHead=ref("");
 const props=defineProps({
     user:Object,
 })

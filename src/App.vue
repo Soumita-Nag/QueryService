@@ -4,6 +4,7 @@
   import askQueries from './pages/askQueries.vue';
   import Login from './components/Login.vue';
   import Signup from './components/Signup.vue';
+  import Questions from './pages/Questions.vue';
 
   import { reactive,ref } from 'vue';
   var user=reactive({
@@ -14,23 +15,31 @@
   const visibility=reactive({
     HomePage:true,
     AskQueries:false,
+    Questions:false,
     Signup:false,
     Login:false,
   })
   const changeVisibility=(newVisibility,source)=>{
     if(source==='AskQueries'){
-      visibility.HomePage=!newVisibility;
       visibility.AskQueries=newVisibility;
+      visibility.HomePage=!newVisibility;
+      visibility.Questions=!newVisibility;
     }
     if(source==='HomePage'){
       visibility.HomePage=newVisibility;
       visibility.AskQueries=!newVisibility;
+      visibility.Questions=!newVisibility;
     }
     if(source==='Signup'){
       visibility.Signup=newVisibility;
     }
     if(source==='Login'){
       visibility.Login=newVisibility;
+    }
+    if(source==='Questions'){
+      visibility.Questions=newVisibility;
+      visibility.HomePage=!newVisibility;
+      visibility.AskQueries=!newVisibility;
     }
   }
   const checkLogin=(uId)=>{
@@ -80,6 +89,7 @@
       <NavBar @activate="changeVisibility" :islogin="user.islogin" :user="user"/>
       <HomePage @activate="changeVisibility" v-if="visibility.HomePage" :islogin="user.islogin"/>
       <askQueries v-if="visibility.AskQueries" :user="user"/>
+      <Questions v-if="visibility.Questions"/>
     </div>
     <div v-if="visibility.Login" class="fixed inset-0 bg-black opacity-80 flex justify-center items-center z-50">
       <Login @activate="changeVisibility" @uId="checkLogin"/>
