@@ -1,7 +1,7 @@
 <template>
     <div class="pt-20">
         <ShowQuestions v-if="visibility.ShowQuestions" :recentQueries="recentQueries" @activate="showAnswerQuestion"/>
-        <AnswerQuestions v-if="visibility.AnswerQuestions" :recentQueries="recentQueries"/>
+        <AnswerQuestions v-if="visibility.AnswerQuestions" :recentQueries="recentQueries" :user="props.user"/>
     </div>
 </template>
 <script setup>
@@ -19,6 +19,9 @@ import { reactive } from 'vue';
         views: 50,
         user:"Soumita",
     }
+    const props=defineProps({
+        user:Object,
+    })
     var visibility=reactive({
         ShowQuestions:true,
         AnswerQuestions:false

@@ -10,6 +10,7 @@
           <option disabled selected>Select Category</option>
           <option value="Programming">Programming</option>
           <option value="History">History</option>
+          <option value="Healthcare">Healthcare</option>
           <option value="General Knowledge">General Knowledge</option>
           <option value="Sports">Sports</option>
           <option value="Space Science">Space Science</option>

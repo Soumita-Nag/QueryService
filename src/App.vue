@@ -89,7 +89,7 @@
       <NavBar @activate="changeVisibility" :islogin="user.islogin" :user="user"/>
       <HomePage @activate="changeVisibility" v-if="visibility.HomePage" :islogin="user.islogin"/>
       <askQueries v-if="visibility.AskQueries" :user="user"/>
-      <Questions v-if="visibility.Questions"/>
+      <Questions v-if="visibility.Questions" :user="user"/>
     </div>
     <div v-if="visibility.Login" class="fixed inset-0 bg-black opacity-80 flex justify-center items-center z-50">
       <Login @activate="changeVisibility" @uId="checkLogin"/>

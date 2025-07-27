@@ -36,7 +36,7 @@
 
       <!-- Category -->
       <div>
-        <button class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm">
+        <button class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm font-semibold">
           {{ props.recentQueries.category }}
         </button>
       </div>
@@ -54,7 +54,7 @@
     </div>
 
     <!-- Your Answer Section -->
-    <div class="space-y-4">
+    <div class="space-y-4" v-if="props.user.islogin && props.user.email=='admin@gmail.com'">
       <h2 class="text-lg font-semibold text-gray-800">Your Answer</h2>
       <textarea placeholder="Enter Your Answer..." class="w-full min-h-[120px] border border-gray-300 rounded-md p-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-300 resize-y"></textarea>
       <div>
@@ -69,6 +69,7 @@
 <script setup>
     const props=defineProps({
         recentQueries:Object,
+        user:Object,
     })
 </script>
 <style scoped>
