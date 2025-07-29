@@ -1,4 +1,5 @@
 <template>
+  <div class="pt-20">
   <div class="max-w-3xl mx-auto p-6 bg-white shadow-lg rounded-xl space-y-8">
     
     <!-- Question Section -->
@@ -63,6 +64,7 @@
         </button>
       </div>
     </div>
+  </div>
   </div>
 </template>
 

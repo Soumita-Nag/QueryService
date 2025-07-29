@@ -23,28 +23,6 @@ import { ref } from 'vue'
 const props=defineProps({
   query:Array,
 })
-const questions = [
-    {
-        question:'What is C?', 
-        date:'19.07.2025',
-        status: 'pending',
-    },
-    {
-        question:'What is C?', 
-        date:'19.07.2025',
-        status: 'pending',
-    },
-    {
-        question:'What is C?', 
-        date:'19.07.2025',
-        status: 'pending',
-    },
-    {
-        question:'Explain closures in JavaScript?', 
-        date:'18.07.2025',
-        status: 'success',
-    }
-]
 const isCollapsed = ref(true)
 
 const toggleSidebar = () => {

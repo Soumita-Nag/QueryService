@@ -5,6 +5,7 @@
   import Login from './components/Login.vue';
   import Signup from './components/Signup.vue';
   import Questions from './pages/Questions.vue';
+  import AnswerQuestions from './components/Questions/AnswerQuestions.vue';
 
   import { onBeforeMount, onMounted, reactive,ref } from 'vue';
   var user=reactive({
@@ -19,6 +20,7 @@
     HomePage:true,
     AskQueries:false,
     Questions:false,
+    AnswerQuestions:false,
     Signup:false,
     Login:false,
   })
@@ -32,6 +34,7 @@
       visibility.HomePage=newVisibility;
       visibility.AskQueries=!newVisibility;
       visibility.Questions=!newVisibility;
+      visibility.AnswerQuestions=!newVisibility;
     }
     if(source==='Signup'){
       visibility.Signup=newVisibility;
@@ -43,6 +46,7 @@
       visibility.Questions=newVisibility;
       visibility.HomePage=!newVisibility;
       visibility.AskQueries=!newVisibility;
+      visibility.AnswerQuestions=!newVisibility;
     }
     if(source==='Logout'){
       user.islogin=false;
@@ -50,6 +54,10 @@
         visibility.AskQueries=false;
         visibility.HomePage=true;
       }
+    }
+    if(source==='AnswerQuestions'){
+      visibility.Questions=!newVisibility;
+      visibility.AnswerQuestions=newVisibility;
     }
   }
   const checkLogin=(uId)=>{
@@ -166,6 +174,12 @@
     }
   };
 
+  var specificQuery=ref("");
+  const sendqId=(q)=>{
+      specificQuery=q;
+  }
+
+
   
   onMounted(async()=>{
     await getAllQuery();
@@ -181,7 +195,8 @@
       <NavBar @activate="changeVisibility" :islogin="user.islogin" :user="user"/>
       <HomePage @activate="changeVisibility" v-if="visibility.HomePage" :islogin="user.islogin" :allQueries="allQueries"/>
       <askQueries v-if="visibility.AskQueries" :user="user" :query="query"  @addQuery="addQuery"/>
-      <Questions v-if="visibility.Questions" :user="user" :allQueries="allQueries"/>
+      <Questions v-if="visibility.Questions" :user="user" :allQueries="allQueries" @activate="changeVisibility" @queryId="sendqId"/>
+      <AnswerQuestions v-if="visibility.AnswerQuestions" :user="user" :query="specificQuery"/>
     </div>
     <div v-if="visibility.Login" class="fixed inset-0 bg-black opacity-80 flex justify-center items-center z-50">
       <Login @activate="changeVisibility" @uId="checkLogin"/>
