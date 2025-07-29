@@ -5,25 +5,25 @@
     <div class="space-y-4 border-b pb-4">
       <!-- Header -->
       <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-2">
-        <span class="text-xl font-semibold text-gray-800">{{ props.recentQueries.queryHead }}</span>
+        <span class="text-xl font-semibold text-gray-800">{{ props.query.queryTitle }}</span>
         <span class="text-sm text-gray-600 flex gap-6 items-center">
             <span class="flex items-center gap-1">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-pink-500" viewBox="0 0 20 20" fill="currentColor">
                     <path d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" />
                 </svg>
-                {{ props.recentQueries.like }}
+                {{ props.query.like }}
             </span>
             <span class="flex items-center gap-1">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-green-600" viewBox="0 0 20 20" fill="currentColor">
                     <path d="M18 13V5a2 2 0 00-2-2H4a2 2 0 00-2 2v10a2 2 0 002 2h10l4 4v-6a2 2 0 002-2z" />
                 </svg>
-                {{ props.recentQueries.ansCount }}
+                {{ props.query.ansCount }}
             </span>
             <span class="flex items-center gap-1">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-blue-500" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M12 5c-7 0-11 7-11 7s4 7 11 7 11-7 11-7-4-7-11-7zm0 12a5 5 0 110-10 5 5 0 010 10zm0-8a3 3 0 100 6 3 3 0 000-6z"/>
                 </svg>
-                {{ props.recentQueries.views }}
+                {{ props.query.views }}
             </span>
         </span>
 
@@ -31,13 +31,13 @@
 
       <!-- Body -->
       <div class="text-gray-700 text-base">
-        {{ props.recentQueries.queryBody }}
+        {{ props.query.query }}
       </div>
 
       <!-- Category -->
       <div>
         <button class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm font-semibold">
-          {{ props.recentQueries.category }}
+          {{ props.query.category }}
         </button>
       </div>
     </div>
@@ -45,8 +45,8 @@
     <!-- Answers Section -->
     <div class="space-y-2 border-b pb-4">
       <div class="text-lg font-medium text-gray-800">
-        {{ props.recentQueries.ansCount }} 
-        {{ props.recentQueries.ansCount <= 1 ? "Answer" : "Answers" }}
+        {{ 0 }} 
+        {{ 0<= 1 ? "Answer" : "Answers" }}
       </div>
       <div class="text-gray-600 italic">
         Answers (will be provided later)
@@ -68,8 +68,8 @@
 
 <script setup>
     const props=defineProps({
-        recentQueries:Object,
         user:Object,
+        query:Object,
     })
 </script>
 <style scoped>

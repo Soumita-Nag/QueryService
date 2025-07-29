@@ -52,8 +52,8 @@ const AddQuery=()=>{
     const month=date.getMonth();
     const year=date.getFullYear();
     const currDate=day+"-"+(month+1)+"-"+year;
-    const hour=date.getHours();
-    const minute=date.getMinutes();
+    const hour=(date.getHours()<=9?"0":"")+date.getHours();
+    const minute=(date.getMinutes()<=9?"0":"")+date.getMinutes();
     const currTime=hour+":"+minute;
     const queryId=time.toString(16);
     const userId=props.user.email.slice(0,props.user.email.indexOf("@"));
@@ -69,6 +69,9 @@ const AddQuery=()=>{
     }
     emit('addQuery',questionSchema);
     // console.log(questionSchema);
+    category="Select Category";
+    query="";
+    queryTitle="";
 }
 </script>
 <style scoped>
