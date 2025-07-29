@@ -19,11 +19,11 @@
       </div>
       <div>
         <label for="questionHead" class="block mb-2 text-sm font-medium text-gray-600">Question Title</label>
-        <input type="text" name="" v-model="questionHead" id="questionHead" placeholder="Enter the Title of your Question" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400" required>
+        <input type="text" name="" v-model="queryTitle" id="questionHead" placeholder="Enter the Title of your Question" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400" required>
       </div>
       <div>
         <label for="question" class="block mb-2 text-sm font-medium text-gray-600">Your Question</label>
-        <textarea name="" v-model="question" id="question" placeholder="Ask Your Question" class="w-full min-h-40 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400" required>
+        <textarea name="" v-model="query" id="question" placeholder="Ask Your Question" class="w-full min-h-40 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400" required>
 
         </textarea>
       </div>
@@ -39,13 +39,36 @@
 <script setup>
 import { defineProps, ref } from 'vue';
 var category="Select Category";
-var question=ref("");
-var questionHead=ref("");
+var query=ref("");
+var queryTitle=ref("");
 const props=defineProps({
     user:Object,
 })
+const emit=defineEmits(['addQuery']);
 const AddQuery=()=>{
-    alert(category+" "+question)
+    const date=new Date();
+    const time=date.getTime();
+    const day=date.getDate();
+    const month=date.getMonth();
+    const year=date.getFullYear();
+    const currDate=day+"-"+(month+1)+"-"+year;
+    const hour=date.getHours();
+    const minute=date.getMinutes();
+    const currTime=hour+":"+minute;
+    const queryId=time.toString(16);
+    const userId=props.user.email.slice(0,props.user.email.indexOf("@"));
+    const questionSchema={
+      queryId:queryId,
+      userId:userId,
+      category:category,
+      queryTitle:queryTitle,
+      query:query,
+      date:currDate,
+      time: currTime,
+      status:"Pending",
+    }
+    emit('addQuery',questionSchema);
+    // console.log(questionSchema);
 }
 </script>
 <style scoped>

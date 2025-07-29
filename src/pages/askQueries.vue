@@ -4,7 +4,7 @@
             <SideBar/>
         </div>
         <div class="p-4">
-            <AskQueryForm :user="props.user"/>
+            <AskQueryForm :user="props.user" @addQuery="addQuery"/>
         </div>
     </div>
 </template>
@@ -15,6 +15,11 @@ import { defineProps } from 'vue';
 const props=defineProps({
     user:Object,
 })
+const emit=defineEmits(['addQuery']);
+const addQuery=(val)=>{
+    emit('addQuery',val);
+    // console.log(val);
+}
 </script>
 <style scoped>
     

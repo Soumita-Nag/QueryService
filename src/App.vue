@@ -8,9 +8,9 @@
 
   import { reactive,ref } from 'vue';
   var user=reactive({
-    islogin:false,
-    uname:"soumi",
-    email:"nagsoumita04@gmail.com",
+    islogin:true,
+    uname:"soumita",
+    email:"hello@gmail.com",
   })
   const visibility=reactive({
     HomePage:true,
@@ -84,6 +84,32 @@
       }
     })
   }
+  const addQuery=(val)=>{
+    // console.log(val);
+    const payload={
+      queryId:val.queryId,
+      userId:val.userId,
+      category:val.category,
+      queryTitle:val.queryTitle.value,
+      query:val.query.value,
+      date:val.date,
+      time:val.time,
+      status:val.status,
+    }
+    $.ajax({
+      url: "http://localhost:8000/addQuery",
+      method:"POST",
+      contentType: "application/json",
+      data: JSON.stringify(payload),
+      // data: {val},
+      success: (data1)=>{
+        console.log("Success: "+ data1);
+      },
+      error:(err)=>{
+        console.log("Error: "+err);
+      }
+    })
+  }
 </script>
 
 <template>
@@ -91,7 +117,7 @@
     <div :class="{'blur-sm pointer-events-none':visibility.Login || visibility.Signup}">
       <NavBar @activate="changeVisibility" :islogin="user.islogin" :user="user"/>
       <HomePage @activate="changeVisibility" v-if="visibility.HomePage" :islogin="user.islogin"/>
-      <askQueries v-if="visibility.AskQueries" :user="user"/>
+      <askQueries v-if="visibility.AskQueries" :user="user" @addQuery="addQuery"/>
       <Questions v-if="visibility.Questions" :user="user"/>
     </div>
     <div v-if="visibility.Login" class="fixed inset-0 bg-black opacity-80 flex justify-center items-center z-50">
