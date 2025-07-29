@@ -57,6 +57,8 @@
     }
     if(source==='AnswerQuestions'){
       visibility.Questions=!newVisibility;
+      visibility.HomePage=!newVisibility;
+      visibility.AskQueries=!newVisibility;
       visibility.AnswerQuestions=newVisibility;
     }
   }
@@ -178,8 +180,6 @@
   const sendqId=(q)=>{
       specificQuery=q;
   }
-
-
   
   onMounted(async()=>{
     await getAllQuery();
@@ -193,8 +193,8 @@
   <div class="relative min-h-screen">
     <div :class="{'blur-sm pointer-events-none':visibility.Login || visibility.Signup}">
       <NavBar @activate="changeVisibility" :islogin="user.islogin" :user="user"/>
-      <HomePage @activate="changeVisibility" v-if="visibility.HomePage" :islogin="user.islogin" :allQueries="allQueries"/>
-      <askQueries v-if="visibility.AskQueries" :user="user" :query="query"  @addQuery="addQuery"/>
+      <HomePage @activate="changeVisibility" v-if="visibility.HomePage" :islogin="user.islogin" :allQueries="allQueries" @queryId="sendqId"/>
+      <askQueries v-if="visibility.AskQueries" :user="user" :query="query"  @addQuery="addQuery" @activate="changeVisibility" @queryId="sendqId"/>
       <Questions v-if="visibility.Questions" :user="user" :allQueries="allQueries" @activate="changeVisibility" @queryId="sendqId"/>
       <AnswerQuestions v-if="visibility.AnswerQuestions" :user="user" :query="specificQuery"/>
     </div>

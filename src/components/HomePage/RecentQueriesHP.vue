@@ -4,6 +4,7 @@
 
     <div v-if="!isloading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 w-full">
       <div v-for="query in allQueries.slice(-8).reverse()" :key="query.queryId" class="bg-white shadow-md rounded-xl p-4 border border-gray-200 transition-all hover:scale-105 hover:shadow-xl cursor-pointer">
+        <div @click="showAnswer(query)">
         <div class="text-sm text-gray-500 mb-2 flex justify-between ">
           <span class="text-blue-700">{{ query.date }}, <span class="text-[0.7rem]">{{ query.time }}</span></span>
           <span><button class=" px-3 py-1 bg-blue-100 text-blue-700 text-[0.65rem] font-medium rounded-full">{{ query.category }}</button></span>
@@ -31,6 +32,7 @@
             </svg>
             {{ query.views }}
           </span>
+        </div>
         </div>
       </div>
     </div>
@@ -65,6 +67,11 @@ const getAllQuery = async () => {
     console.error("Error fetching queries:", err);
   }
 };
+const emit=defineEmits(['activate','queryId'])
+const showAnswer=(query)=>{
+  emit('activate',true,'AnswerQuestions');
+  emit('queryId',query);
+}
 onMounted(async()=>{
   await getAllQuery();
 })
