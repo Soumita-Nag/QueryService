@@ -6,12 +6,15 @@
   import Signup from './components/Signup.vue';
   import Questions from './pages/Questions.vue';
 
-  import { reactive,ref } from 'vue';
+  import { onMounted, reactive,ref } from 'vue';
   var user=reactive({
     islogin:true,
     uname:"soumita",
     email:"hello@gmail.com",
   })
+  var allQueries=[];
+  var queries=[];
+  
   const visibility=reactive({
     HomePage:true,
     AskQueries:false,
@@ -110,6 +113,36 @@
       }
     })
   }
+  const getAllQuery=()=>{
+    $.ajax({
+      url: "http://localhost:8000/getAllQuery",
+      method:"GET",
+      success: (data)=>{
+        allQueries=data;
+        console.log(allQueries);
+      },
+      error: (err)=>{
+        console.log("error: "+err);
+      }
+    })
+  }
+  const getQuery=(userId)=>{
+    $.ajax({
+      url: "http://localhost:8000/getQuery?userId="+userId,
+      method:"GET",
+      success: (data)=>{
+        queries=data;
+        console.log(queries);
+      },
+      error: (err)=>{
+        console.log("error: "+err);
+      }
+    })
+  }
+  onMounted(()=>{
+    getAllQuery();
+    // getQuery("hello");
+  })
 </script>
 
 <template>
