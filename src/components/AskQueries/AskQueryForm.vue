@@ -61,17 +61,17 @@ const AddQuery=()=>{
       queryId:queryId,
       userId:userId,
       category:category,
-      queryTitle:queryTitle,
-      query:query,
+      queryTitle:queryTitle.value,
+      query:query.value,
       date:currDate,
       time: currTime,
       status:"Pending",
-    }
+    } 
+    category="Select Category";
+    query.value="";
+    queryTitle.value="";
     emit('addQuery',questionSchema);
     // console.log(questionSchema);
-    category="Select Category";
-    query="";
-    queryTitle="";
 }
 </script>
 <style scoped>

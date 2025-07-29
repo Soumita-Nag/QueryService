@@ -46,6 +46,10 @@
     }
     if(source==='Logout'){
       user.islogin=false;
+      if(visibility.AskQueries){
+        visibility.AskQueries=false;
+        visibility.HomePage=true;
+      }
     }
   }
   const checkLogin=(uId)=>{
@@ -93,8 +97,8 @@
       queryId:val.queryId,
       userId:val.userId,
       category:val.category,
-      queryTitle:val.queryTitle.value,
-      query:val.query.value,
+      queryTitle:val.queryTitle,
+      query:val.query,
       like: 0,
       ansCount: 0,
       views: 0,
@@ -110,12 +114,12 @@
       // data: {val},
       success: (data1)=>{
         console.log("Success: "+ data1);
+        getAllQuery();
       },
       error:(err)=>{
         console.log("Error: "+err);
       }
     })
-    getAllQuery();
   }
   const getAllQuery=()=>{
     $.ajax({
