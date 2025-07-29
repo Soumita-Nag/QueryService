@@ -13,7 +13,7 @@
     email:"hello@gmail.com",
   })
   var allQueries=ref([]);
-  var queries=ref([]);
+  var query=ref([]);
 
   const visibility=reactive({
     HomePage:true,
@@ -61,11 +61,12 @@
         email:uId.email,
         password:uId.password
       }),
-      success: (data,txtstatus,jqXHR)=>{
+      success: async(data,txtstatus,jqXHR)=>{
         if(jqXHR.status==200){
           user.islogin=true;
           user.email=data[0].email;
           user.uname=data[0].uname;
+          await getQuery(data[0].email.slice(0,data[0].email.indexOf("@")));
         }
       },
       error: (err)=>{
@@ -142,23 +143,35 @@
     }
   };
 
-  const getQuery=(userId)=>{
-    $.ajax({
-      url: "http://localhost:8000/getQuery?userId="+userId,
-      method:"GET",
-      success: (data)=>{
-        queries.value=data;
-        console.log(queries);
-      },
-      error: (err)=>{
-        console.log("error: "+err);
-      }
-    })
-  }
+  const getQuery = async (userId) => {
+    try {
+      const data = await new Promise((resolve, reject) => {
+        $.ajax({
+          url: "http://localhost:8000/getQuery?userId=" + userId,
+          method: "GET",
+          success: (data) => {
+            resolve(data);
+          },
+          error: (err) => {
+            reject(err);
+          }
+        });
+      });
+
+      query.value = data;
+      console.log(query.value);
+
+    } catch (err) {
+      console.error("Error fetching query:", err);
+    }
+  };
+
   
   onMounted(async()=>{
     await getAllQuery();
-    // getQuery("hello");
+    if(user.islogin){
+      await getQuery(user.email.slice(0,user.email.indexOf("@")));
+    }
   })
 </script>
 
@@ -167,7 +180,7 @@
     <div :class="{'blur-sm pointer-events-none':visibility.Login || visibility.Signup}">
       <NavBar @activate="changeVisibility" :islogin="user.islogin" :user="user"/>
       <HomePage @activate="changeVisibility" v-if="visibility.HomePage" :islogin="user.islogin" :allQueries="allQueries"/>
-      <askQueries v-if="visibility.AskQueries" :user="user" @addQuery="addQuery"/>
+      <askQueries v-if="visibility.AskQueries" :user="user" :query="query"  @addQuery="addQuery"/>
       <Questions v-if="visibility.Questions" :user="user" :allQueries="allQueries"/>
     </div>
     <div v-if="visibility.Login" class="fixed inset-0 bg-black opacity-80 flex justify-center items-center z-50">

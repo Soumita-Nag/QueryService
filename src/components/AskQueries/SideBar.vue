@@ -7,11 +7,11 @@
     <div v-if="!isCollapsed" class="mt-8">
       <h2 class="text-xl font-semibold mb-4">Your Questions</h2>
       <ul class="space-y-2">
-        <li v-for="(question, index) in questions" :key="index" class="p-2 bg-white cursor-pointer" >
-          <div class="truncate" :class="question.status=='pending'?'text-orange-600':question.status=='success'?'text-green-700':'text-black'">
-            {{ question.question }}
+        <li v-for="query in props.query" :key="query.queryId" class="p-2 bg-white cursor-pointer" >
+          <div class="truncate" :class="query.status=='Pending'?'text-orange-600':query.status=='Success'?'text-green-700':'text-black'">
+            {{ query.query }}
           </div>
-          <div class="text-gray-700 text-[0.7rem]">{{ question.date }}</div>
+          <div class="text-gray-700 text-[0.7rem]">{{ query.date }}</div>
         </li>
       </ul>
     </div>
@@ -20,7 +20,9 @@
 
 <script setup>
 import { ref } from 'vue'
-
+const props=defineProps({
+  query:Array,
+})
 const questions = [
     {
         question:'What is C?', 
@@ -41,52 +43,7 @@ const questions = [
         question:'Explain closures in JavaScript?', 
         date:'18.07.2025',
         status: 'success',
-    },
-    {
-        question:'What is polymorphism?', 
-        date:'16.07.2025',
-        status: 'success',
-    },
-    {
-        question:'Explain closures in JavaScript?', 
-        date:'18.07.2025',
-        status: 'success',
-    },
-    {
-        question:'What is polymorphism?', 
-        date:'16.07.2025',
-        status: 'success',
-    },
-    {
-        question:'Explain closures in JavaScript?', 
-        date:'18.07.2025',
-        status: 'success',
-    },
-    {
-        question:'What is polymorphism?', 
-        date:'16.07.2025',
-        status: 'success',
-    },
-    {
-        question:'Explain closures in JavaScript?', 
-        date:'18.07.2025',
-        status: 'success',
-    },
-    {
-        question:'What is polymorphism?', 
-        date:'16.07.2025',
-        status: 'success',
-    },
-    {
-        question:'What is C?', 
-        date:'19.07.2025',
-        status: 'pending',
-    },
-    {
-        question:'What is C?', 
-        date:'19.07.2025',
-        status: 'pending',
-    },
+    }
 ]
 const isCollapsed = ref(true)
 
