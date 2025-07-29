@@ -16,6 +16,7 @@
           <span class="capitalize text-xl cursor-pointer hover:text-green-500 transition-colors">
             {{ user.uname }}
           </span>
+          <span @click="logout" class="block hover:text-green-600 cursor-pointer">Logout</span>
         </template>
       </div>
       <div class="md:hidden">
@@ -33,13 +34,14 @@
       <span @click="showQuestions" class="block hover:text-blue-600 cursor-pointer">Questions</span>
       <span @click="showContact" class="block hover:text-blue-600 cursor-pointer">Contact Us</span>
 
-      <template v-if="!islogin">
+      <span v-if="!islogin">
         <span @click="showLogin" class="block hover:text-green-600 cursor-pointer">Login</span>
         <span @click="showSignup" class="block hover:text-green-600 cursor-pointer">Signup</span>
-      </template>
-      <template v-else>
+      </span>
+      <span v-else>
         <span class="block capitalize text-xl hover:text-green-500 cursor-pointer">{{ user.uname }}</span>
-      </template>
+        <span @click="logout" class="block hover:text-green-600 cursor-pointer">Logout</span>
+      </span>
     </div>
   </nav>
 </template>
@@ -66,6 +68,9 @@ import { defineProps,ref } from 'vue';
     const mobileMenuOpen = ref(false)
     const toggleMobileMenu = () => {
       mobileMenuOpen.value = !mobileMenuOpen.value
+    }
+    const logout=()=>{
+      emit('activate',true,'Logout');
     }
 </script>
 <style scoped>

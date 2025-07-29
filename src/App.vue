@@ -41,6 +41,9 @@
       visibility.HomePage=!newVisibility;
       visibility.AskQueries=!newVisibility;
     }
+    if(source==='Logout'){
+      user.islogin=false;
+    }
   }
   const checkLogin=(uId)=>{
     $.ajax({
