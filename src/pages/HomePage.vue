@@ -1,5 +1,5 @@
 <template>
-    <HeroSectionHP @activate="passToApp" :islogin="islogin"/>
+    <HeroSectionHP @activate="passToApp" :islogin="islogin" :allQueries="props.allQueries"/>
     <RecentQueriesHP/>
 </template>
 <script setup>
@@ -10,6 +10,7 @@ import { defineProps } from 'vue';
 const emit=defineEmits(['activate']);
 const props=defineProps({
     islogin:Boolean,
+    allQueries:Array,
 })
 const passToApp=(value,source)=>{
     emit('activate',value,source);

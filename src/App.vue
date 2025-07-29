@@ -6,14 +6,14 @@
   import Signup from './components/Signup.vue';
   import Questions from './pages/Questions.vue';
 
-  import { onMounted, reactive,ref } from 'vue';
+  import { onBeforeMount, onMounted, reactive,ref } from 'vue';
   var user=reactive({
     islogin:true,
     uname:"soumita",
     email:"hello@gmail.com",
   })
-  var allQueries=[];
-  var queries=[];
+  var allQueries=ref([]);
+  var queries=ref([]);
 
   const visibility=reactive({
     HomePage:true,
@@ -121,25 +121,33 @@
       }
     })
   }
-  const getAllQuery=()=>{
-    $.ajax({
-      url: "http://localhost:8000/getAllQuery",
-      method:"GET",
-      success: (data)=>{
-        allQueries=data;
-        console.log(allQueries);
-      },
-      error: (err)=>{
-        console.log("error: "+err);
-      }
-    })
-  }
+  const getAllQuery = async () => {
+    try {
+      const data = await new Promise((resolve, reject) => {
+        $.ajax({
+          url: "http://localhost:8000/getAllQuery",
+          method: "GET",
+          success: (data) => {
+            resolve(data); 
+          },
+          error: (err) => {
+            reject(err); 
+          }
+        });
+      });
+      allQueries.value = data;
+      // console.log("Fetched Queries:", allQueries.value);
+    } catch (err) {
+      console.error("Error fetching queries:", err);
+    }
+  };
+
   const getQuery=(userId)=>{
     $.ajax({
       url: "http://localhost:8000/getQuery?userId="+userId,
       method:"GET",
       success: (data)=>{
-        queries=data;
+        queries.value=data;
         console.log(queries);
       },
       error: (err)=>{
@@ -147,8 +155,9 @@
       }
     })
   }
-  onMounted(()=>{
-    getAllQuery();
+  
+  onMounted(async()=>{
+    await getAllQuery();
     // getQuery("hello");
   })
 </script>
@@ -157,7 +166,7 @@
   <div class="relative min-h-screen">
     <div :class="{'blur-sm pointer-events-none':visibility.Login || visibility.Signup}">
       <NavBar @activate="changeVisibility" :islogin="user.islogin" :user="user"/>
-      <HomePage @activate="changeVisibility" v-if="visibility.HomePage" :islogin="user.islogin"/>
+      <HomePage @activate="changeVisibility" v-if="visibility.HomePage" :islogin="user.islogin" :allQueries="allQueries"/>
       <askQueries v-if="visibility.AskQueries" :user="user" @addQuery="addQuery"/>
       <Questions v-if="visibility.Questions" :user="user" :allQueries="allQueries"/>
     </div>
