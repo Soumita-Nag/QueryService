@@ -57,9 +57,9 @@
     <!-- Your Answer Section -->
     <div class="space-y-4" v-if="props.user.islogin && props.user.email=='admin@gmail.com'">
       <h2 class="text-lg font-semibold text-gray-800">Your Answer</h2>
-      <textarea placeholder="Enter Your Answer..." class="w-full min-h-[120px] border border-gray-300 rounded-md p-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-300 resize-y"></textarea>
+      <textarea placeholder="Enter Your Answer..." v-model="ans" class="w-full min-h-[120px] border border-gray-300 rounded-md p-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-300 resize-y"></textarea>
       <div>
-        <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm transition cursor-pointer">
+        <button @click="postAnswer" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm transition cursor-pointer">
           Post Your Answer
         </button>
       </div>
@@ -69,10 +69,34 @@
 </template>
 
 <script setup>
+import { ref } from 'vue';
+
+    var ans=ref("");
     const props=defineProps({
         user:Object,
         query:Object,
+        admin:Object,
     })
+    const emit=defineEmits(['answer']);
+    const postAnswer=()=>{
+      const date=new Date();
+      const day=date.getDate();
+      const month=date.getMonth();
+      const year=date.getFullYear();
+      const currDate=day+"-"+(month+1)+"-"+year;
+      const hour=date.getHours();
+      const minute=date.getMinutes();
+      const time=hour+":"+minute;
+      const answer={
+        queryId:props.query.queryId,
+        adminId:props.admin.email,
+        answer: ans.value,
+        date: currDate,
+        time: time,
+        rank: 1,
+      }
+      emit('answer',answer);
+    }
 </script>
 <style scoped>
     

@@ -10,8 +10,12 @@
   import { onBeforeMount, onMounted, reactive,ref } from 'vue';
   var user=reactive({
     islogin:true,
-    uname:"soumita",
-    email:"hello@gmail.com",
+    uname:"Admin",
+    email:"admin@gmail.com",
+  })
+  const admin=reactive({
+    uname:"Admin",
+    email:"admin@gmail.com"
   })
   var allQueries=ref([]);
   var query=ref([]);
@@ -175,6 +179,21 @@
       console.error("Error fetching query:", err);
     }
   };
+  const postAnswer=(answer)=>{
+    // alert("Answer Posting")
+    $.ajax({
+      url: "http://localhost:8000/postAnswer",
+      method:"POST",
+      contentType: "application/json",
+      data: JSON.stringify(answer),
+      success: (data)=>{
+        console.log("Success: "+ data);
+      },
+      error:(err)=>{
+        console.log("Error: "+err);
+      }
+    })
+  }
 
   var specificQuery=ref("");
   const sendqId=(q)=>{
@@ -192,11 +211,11 @@
 <template>
   <div class="relative min-h-screen">
     <div :class="{'blur-sm pointer-events-none':visibility.Login || visibility.Signup}">
-      <NavBar @activate="changeVisibility" :islogin="user.islogin" :user="user"/>
+      <NavBar @activate="changeVisibility" :islogin="user.islogin" :user="user" :admin="admin"/>
       <HomePage @activate="changeVisibility" v-if="visibility.HomePage" :islogin="user.islogin" :allQueries="allQueries" @queryId="sendqId"/>
       <askQueries v-if="visibility.AskQueries" :user="user" :query="query"  @addQuery="addQuery" @activate="changeVisibility" @queryId="sendqId"/>
       <Questions v-if="visibility.Questions" :user="user" :allQueries="allQueries" @activate="changeVisibility" @queryId="sendqId"/>
-      <AnswerQuestions v-if="visibility.AnswerQuestions" :user="user" :query="specificQuery"/>
+      <AnswerQuestions v-if="visibility.AnswerQuestions" :user="user" :query="specificQuery" :admin="admin" @answer="postAnswer"/>
     </div>
     <div v-if="visibility.Login" class="fixed inset-0 bg-black opacity-80 flex justify-center items-center z-50">
       <Login @activate="changeVisibility" @uId="checkLogin"/>
