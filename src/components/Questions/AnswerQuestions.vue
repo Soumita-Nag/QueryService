@@ -46,11 +46,11 @@
     <!-- Answers Section -->
     <div class="space-y-2 border-b pb-4">
       <div class="text-lg font-medium text-gray-800">
-        {{ 0 }} 
-        {{ 0<= 1 ? "Answer" : "Answers" }}
+        {{ props.query.ansCount }} 
+        {{ props.query.ansCount<= 1 ? "Answer" : "Answers" }}
       </div>
-      <div class="text-gray-600 italic">
-        Answers (will be provided later)
+      <div class="text-gray-600 italic" v-if="props.query.ansCount>=1">
+        {{ props.query.answer }}
       </div>
     </div>
 

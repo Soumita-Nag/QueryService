@@ -4,9 +4,9 @@
       <div class="text-xl font-bold text-gray-800">AskHive</div>
       <div class="hidden md:flex gap-8 text-gray-700 font-medium text-base">
         <span @click="showHome" class="hover:text-blue-600 cursor-pointer transition-colors">Home</span>
-        <span @click="showQuestions" class="hover:text-blue-600 cursor-pointer transition-colors" v-if="props.user.email!=props.admin.email">Questions</span>
-        <span @click="showUnAnsweresQuestions" class="hover:text-blue-600 cursor-pointer transition-colors" v-if="props.user.email==props.admin.email">Unanswered Questions</span>
-        <span @click="showAnsweredQuestions" class="hover:text-blue-600 cursor-pointer transition-colors" v-if="props.user.email==props.admin.email">Answered Questions</span>
+        <span @click="showQuestions" class="hover:text-blue-600 cursor-pointer transition-colors" v-if="!props.user.islogin || props.user.email!=props.admin.email">Questions</span>
+        <span @click="showUnAnsweresQuestions" class="hover:text-blue-600 cursor-pointer transition-colors" v-if="props.user.islogin && props.user.email==props.admin.email">Unanswered Questions</span>
+        <span @click="showAnsweredQuestions" class="hover:text-blue-600 cursor-pointer transition-colors" v-if="props.user.islogin && props.user.email==props.admin.email">Answered Questions</span>
         <!-- <span @click="showContact" class="hover:text-blue-600 cursor-pointer transition-colors">Contact Us</span> -->
       </div>
       <div class="hidden md:flex gap-6 text-gray-700 font-medium text-base items-center">
