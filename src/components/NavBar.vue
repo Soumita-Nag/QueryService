@@ -5,8 +5,8 @@
       <div class="hidden md:flex gap-8 text-gray-700 font-medium text-base">
         <span @click="showHome" class="hover:text-blue-600 cursor-pointer transition-colors">Home</span>
         <span @click="showQuestions" class="hover:text-blue-600 cursor-pointer transition-colors" v-if="props.user.email!=props.admin.email">Questions</span>
-        <span @click="showQuestions" class="hover:text-blue-600 cursor-pointer transition-colors" v-if="props.user.email==props.admin.email">Unanswered Questions</span>
-        <span @click="showQuestions" class="hover:text-blue-600 cursor-pointer transition-colors" v-if="props.user.email==props.admin.email">Answered Questions</span>
+        <span @click="showUnAnsweresQuestions" class="hover:text-blue-600 cursor-pointer transition-colors" v-if="props.user.email==props.admin.email">Unanswered Questions</span>
+        <span @click="showAnsweredQuestions" class="hover:text-blue-600 cursor-pointer transition-colors" v-if="props.user.email==props.admin.email">Answered Questions</span>
         <!-- <span @click="showContact" class="hover:text-blue-600 cursor-pointer transition-colors">Contact Us</span> -->
       </div>
       <div class="hidden md:flex gap-6 text-gray-700 font-medium text-base items-center">
@@ -34,9 +34,9 @@
     <div v-if="mobileMenuOpen" class="md:hidden mt-4 space-y-3 text-gray-700 font-medium text-base">
       <span @click="showHome" class="block hover:text-blue-600 cursor-pointer">Home</span>
       <span @click="showQuestions" class="block hover:text-blue-600 cursor-pointer" v-if="props.user.email!=props.admin.email">Questions</span>
-      <span @click="showQuestions" class="block hover:text-blue-600 cursor-pointer" v-if="props.user.email==props.admin.email">Unanswered Questions</span>
-      <span @click="showQuestions" class="block hover:text-blue-600 cursor-pointer" v-if="props.user.email==props.admin.email">Answered Questions</span>
-      <span @click="showContact" class="block hover:text-blue-600 cursor-pointer">Contact Us</span>
+      <span @click="showUnAnsweresQuestions" class="block hover:text-blue-600 cursor-pointer" v-if="props.user.email==props.admin.email">Unanswered Questions</span>
+      <span @click="showAnsweredQuestions" class="block hover:text-blue-600 cursor-pointer" v-if="props.user.email==props.admin.email">Answered Questions</span>
+      <!-- <span @click="showContact" class="block hover:text-blue-600 cursor-pointer">Contact Us</span> -->
       
       <span v-if="!islogin">
         <span @click="showLogin" class="block hover:text-green-600 cursor-pointer">Login</span>
@@ -76,6 +76,12 @@ import { defineProps,ref } from 'vue';
     }
     const logout=()=>{
       emit('activate',true,'Logout');
+    }
+    const showUnAnsweresQuestions=()=>{
+      emit('activate',true,'unAnsweredQuestions');
+    }
+    const showAnsweredQuestions=()=>{
+      emit('activate',true,'answeredQuestions');
     }
 </script>
 <style scoped>

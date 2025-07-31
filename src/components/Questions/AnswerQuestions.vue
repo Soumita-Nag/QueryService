@@ -87,7 +87,7 @@ import { ref } from 'vue';
       const hour=date.getHours();
       const minute=date.getMinutes();
       const time=hour+":"+minute;
-      const answer={
+      const answer={  
         queryId:props.query.queryId,
         adminId:props.admin.email,
         answer: ans.value,
@@ -95,6 +95,7 @@ import { ref } from 'vue';
         time: time,
         rank: 1,
       }
+      ans.value="";
       emit('answer',answer);
     }
 </script>
