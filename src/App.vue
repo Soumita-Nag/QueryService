@@ -108,9 +108,9 @@
       success: async(data,txtstatus,jqXHR)=>{
         if(jqXHR.status==200){
           user.islogin=true;
-          user.email=data[0].email;
-          user.uname=data[0].uname;
-          await getQuery(data[0].email.slice(0,data[0].email.indexOf("@")));
+          user.email=data.email;
+          user.uname=data.uname;
+          await getQuery(data.email.slice(0,data.email.indexOf("@")));
           toast.success("Login Successfully")
         }
         else{
