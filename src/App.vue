@@ -40,6 +40,7 @@
       visibility.AskQueries=newVisibility;
       visibility.HomePage=!newVisibility;
       visibility.Questions=!newVisibility;
+      await getQuery(user.email.slice(0,user.email.indexOf("@")));
     }
     if(source==='HomePage'){
       visibility.HomePage=newVisibility;
@@ -131,7 +132,7 @@
       }
     })
   }
-  const addQuery=(val)=>{
+  const addQuery= (val)=>{
     // console.log(val);
     const payload={
       queryId:val.queryId,
@@ -152,9 +153,10 @@
       contentType: "application/json",
       data: JSON.stringify(payload),
       // data: {val},
-      success: (data1)=>{
+      success: async(data1)=>{
         console.log("Success: "+ data1);
-        getAllQuery();
+        await getAllQuery();
+        await getQuery(user.email.slice(0,user.email.indexOf("@")));
       },
       error:(err)=>{
         console.log("Error: "+err);

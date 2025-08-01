@@ -7,7 +7,7 @@
     <div v-if="!isCollapsed" class="mt-8">
       <h2 class="text-xl font-semibold mb-4">Your Questions</h2>
       <ul class="space-y-2">
-        <li v-for="query in props.query" :key="query.queryId" class="p-2 bg-white cursor-pointer" >
+        <li v-for="query in props.query.slice().reverse()" :key="query.queryId" class="p-2 bg-white cursor-pointer" >
           <div class="truncate" @click="showAnswer(query)" :class="query.status=='Pending'?'text-orange-600':query.status=='success'?'text-green-700':'text-black'">
             {{ query.query }}
           </div>
