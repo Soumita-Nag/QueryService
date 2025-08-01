@@ -14,13 +14,14 @@
   
   const toast=useToast();
   var user=reactive({
-    islogin:true,
-    uname:"Admin",
-    email:"admin@gmail.com",
+    islogin:false,
+    uname:"",
+    email:"",
   })
   const admin=reactive({
     uname:"Admin",
-    email:"admin@gmail.com"
+    email:"admin@gmail.com",
+    role:"admin",
   })
 
   var allQueries=ref([]);
@@ -82,10 +83,12 @@
     if(source==='Logout'){
       user.islogin=false;
       toast.success('Logged out successfully')
-      if(visibility.AskQueries){
-        visibility.AskQueries=false;
-        visibility.HomePage=true;
-      }
+      visibility.HomePage=true;
+      visibility.Questions=false;
+      visibility.answeredQuestions=false;
+      visibility.unAnsweredQuestions=false;
+      visibility.AskQueries=false;
+      visibility.AnswerQuestions=false;
     }
     if(source==='AnswerQuestions'){
       visibility.Questions=!newVisibility;
@@ -137,11 +140,12 @@
         url:"http://localhost:8000/signup",
         method:"POST",
         contentType:"application/json",
-      data: JSON.stringify({
-        uname:uId.uname,
-        email:uId.email,
-        password:uId.password
-      }),
+        data: JSON.stringify({
+          uname:uId.uname,
+          email:uId.email,
+          password:uId.password,
+          role:"user"
+        }),
       success: (data)=>{
         console.log("Success: "+data);
       },

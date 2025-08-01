@@ -27,3 +27,15 @@ npm run dev
 ```sh
 npm run build
 ```
+
+### Demo User:
+
+```sh
+nagsoumita04@gmail.com Soumita@1234
+anu@gmail.com Anu@1234
+```
+### Demo Admin:
+
+```sh
+admin@gmail.com Admin@1234
+```
