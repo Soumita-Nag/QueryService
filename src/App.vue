@@ -10,6 +10,9 @@
   import UnAnsweredQuestions from './components/Questions/UnAnsweredQuestions.vue';
 
   import { onBeforeMount, onMounted, reactive,ref } from 'vue';
+  import { useToast } from 'vue-toastification';
+  
+  const toast=useToast();
   var user=reactive({
     islogin:true,
     uname:"Admin",
@@ -78,6 +81,7 @@
     }
     if(source==='Logout'){
       user.islogin=false;
+      toast.success('Logged out successfully')
       if(visibility.AskQueries){
         visibility.AskQueries=false;
         visibility.HomePage=true;
@@ -107,6 +111,13 @@
           user.email=data[0].email;
           user.uname=data[0].uname;
           await getQuery(data[0].email.slice(0,data[0].email.indexOf("@")));
+          toast.success("Login Successfully")
+        }
+        else{
+          // console.log("Invalid Credentials !")
+          visibility.Login=true;
+          toast.error("Invalid Credentials !");
+
         }
       },
       error: (err)=>{
@@ -128,6 +139,8 @@
         console.log("Success: "+data);
       },
       error: (err)=>{
+        visibility.Signup=true;
+        toast.error("User Already Exists!!");
         console.log("Error: "+err);
       }
     })
