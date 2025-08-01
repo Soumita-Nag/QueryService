@@ -126,10 +126,17 @@
     })
   }
   const createAccount=(uId)=>{
-    $.ajax({
-      url:"http://localhost:8000/signup",
-      method:"POST",
-      contentType:"application/json",
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^&*!()_+=\-[\]{};':"\\|,.<>/?]).{8,}$/;
+    if(!passwordRegex.test(uId.password)){
+      visibility.Signup=true;
+      toast.error("Wrong Input Format!!")
+      return;
+    }
+    else{
+      $.ajax({
+        url:"http://localhost:8000/signup",
+        method:"POST",
+        contentType:"application/json",
       data: JSON.stringify({
         uname:uId.uname,
         email:uId.email,
@@ -144,6 +151,7 @@
         console.log("Error: "+err);
       }
     })
+    }
   }
   const addQuery= (val)=>{
     // console.log(val);
