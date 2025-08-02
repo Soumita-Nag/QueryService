@@ -18,6 +18,9 @@
     uname:"",
     email:"",
   })
+  const updateUserLocalStorage=()=>{
+    localStorage.setItem('user',JSON.stringify(user));
+  }
   const admin=reactive({
     uname:"Admin",
     email:"admin@gmail.com",
@@ -82,6 +85,8 @@
     }
     if(source==='Logout'){
       user.islogin=false;
+      user.email="";
+      user.uname="";
       toast.success('Logged out successfully')
       visibility.HomePage=true;
       visibility.Questions=false;
@@ -89,6 +94,8 @@
       visibility.unAnsweredQuestions=false;
       visibility.AskQueries=false;
       visibility.AnswerQuestions=false;
+      updateUserLocalStorage();
+
     }
     if(source==='AnswerQuestions'){
       visibility.Questions=!newVisibility;
@@ -115,6 +122,7 @@
           user.uname=data.uname;
           await getQuery(data.email.slice(0,data.email.indexOf("@")));
           toast.success("Login Successfully")
+          updateUserLocalStorage();
         }
         else{
           // console.log("Invalid Credentials !")
@@ -299,6 +307,12 @@
   }
   
   onMounted(async()=>{
+    const savedUser=JSON.parse(localStorage.getItem('user'));
+    if(savedUser){
+      user.islogin=savedUser.islogin;
+      user.uname=savedUser.uname;
+      user.email=savedUser.email;
+    }
     await getAllQuery();
     await getAnsweredQuery();
     await getUnAnsweredQuery();
