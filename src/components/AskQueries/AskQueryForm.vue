@@ -57,6 +57,8 @@ const AddQuery=()=>{
     const currTime=hour+":"+minute;
     const queryId=time.toString(16);
     const userId=props.user.email.slice(0,props.user.email.indexOf("@"));
+    if(category=="Select Category")
+    category="General Knowledge"
     const questionSchema={
       queryId:queryId,
       userId:userId,
