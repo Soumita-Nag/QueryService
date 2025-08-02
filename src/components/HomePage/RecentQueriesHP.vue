@@ -50,7 +50,7 @@ const getAllQuery = async () => {
   try {
     const data = await new Promise((resolve, reject) => {
       $.ajax({
-        url: "http://localhost:8000/getAllQuery",
+        url: import.meta.env.VITE_BACKEND_URL+"getAllQuery",
         method: "GET",
         success: (data) => {
           resolve(data); 
