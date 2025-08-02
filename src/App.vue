@@ -12,6 +12,9 @@
   import { onBeforeMount, onMounted, reactive,ref } from 'vue';
   import { useToast } from 'vue-toastification';
   
+
+  const backEndUrl=import.meta.env.VITE_BACKEND_URL;
+
   const toast=useToast();
   var user=reactive({
     islogin:false,
@@ -22,9 +25,9 @@
     localStorage.setItem('user',JSON.stringify(user));
   }
   const admin=reactive({
-    uname:"Admin",
-    email:"admin@gmail.com",
-    role:"admin",
+    uname:import.meta.env.VITE_ADMIN_UNAME,
+    email:import.meta.env.VITE_ADMIN_EMAIL,
+    role:import.meta.env.VITE_ADMIN_ROLE,
   })
 
   var allQueries=ref([]);
@@ -108,7 +111,7 @@
   }
   const checkLogin=(uId)=>{
     $.ajax({
-      url:"http://localhost:8000/login",
+      url:backEndUrl+"login",
       method:"POST",
       contentType:"application/json",
       data: JSON.stringify({
@@ -145,7 +148,7 @@
     }
     else{
       $.ajax({
-        url:"http://localhost:8000/signup",
+        url:backEndUrl+"signup",
         method:"POST",
         contentType:"application/json",
         data: JSON.stringify({
@@ -181,7 +184,7 @@
       status:val.status,
     }
     $.ajax({
-      url: "http://localhost:8000/addQuery",
+      url: backEndUrl+"addQuery",
       method:"POST",
       contentType: "application/json",
       data: JSON.stringify(payload),
@@ -200,7 +203,7 @@
     try {
       const data = await new Promise((resolve, reject) => {
         $.ajax({
-          url: "http://localhost:8000/getAllQuery",
+          url: backEndUrl+"getAllQuery",
           method: "GET",
           success: (data) => {
             resolve(data); 
@@ -221,7 +224,7 @@
     try {
       const data = await new Promise((resolve, reject) => {
         $.ajax({
-          url: "http://localhost:8000/getQuery?userId=" + userId,
+          url: backEndUrl+"getQuery?userId=" + userId,
           method: "GET",
           success: (data) => {
             resolve(data);
@@ -242,7 +245,7 @@
   const postAnswer=async(answer)=>{
     // alert("Answer Posting")
     $.ajax({
-      url: "http://localhost:8000/postAnswer",
+      url: backEndUrl+"postAnswer",
       method:"POST",
       contentType: "application/json",
       data: JSON.stringify(answer),
@@ -260,7 +263,7 @@
     try {
       const data = await new Promise((resolve, reject) => {
         $.ajax({
-          url: "http://localhost:8000/getAnsweredQueries",
+          url: backEndUrl+"getAnsweredQueries",
           method: "GET",
           success: (data) => {
             resolve(data);
@@ -282,7 +285,7 @@
     try {
       const data = await new Promise((resolve, reject) => {
         $.ajax({
-          url: "http://localhost:8000/getUnAnsweredQueries",
+          url: backEndUrl+"getUnAnsweredQueries",
           method: "GET",
           success: (data) => {
             resolve(data);
