@@ -26,6 +26,13 @@
                 </svg>
                 {{ props.query.views }}
             </span>
+            <span class="flex items-center gap-1" v-if="user.email==query.userId+'@gmail.com'">
+                <svg @click="delQuery" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-red-500 cursor-pointer" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M9 3V4H4V6H5V19C5 20.1 5.9 21 7 21H17C18.1 21 19 20.1 19 19V6H20V4H15V3H9ZM7 6H17V19H7V6Z" />
+                    <path d="M9 8H11V17H9V8ZM13 8H15V17H13V8Z" />
+                </svg>
+            </span>
+
         </span>
 
       </div>
@@ -55,7 +62,7 @@
     </div>
 
     <!-- Your Answer Section -->
-    <div class="space-y-4" v-if="props.user.islogin && props.user.email=='admin@gmail.com'">
+    <div class="space-y-4" v-if="props.user.islogin && props.user.role=='admin'">
       <h2 class="text-lg font-semibold text-gray-800">Your Answer</h2>
       <textarea placeholder="Enter Your Answer..." v-model="ans" class="w-full min-h-[120px] border border-gray-300 rounded-md p-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-300 resize-y"></textarea>
       <div>
@@ -75,9 +82,8 @@ import { ref } from 'vue';
     const props=defineProps({
         user:Object,
         query:Object,
-        admin:Object,
     })
-    const emit=defineEmits(['answer']);
+    const emit=defineEmits(['answer','delQuery']);
     const postAnswer=()=>{
       const date=new Date();
       const day=date.getDate();
@@ -97,6 +103,9 @@ import { ref } from 'vue';
       }
       ans.value="";
       emit('answer',answer);
+    }
+    const delQuery=()=>{
+      emit('delQuery',props.query.queryId);
     }
 </script>
 <style scoped>

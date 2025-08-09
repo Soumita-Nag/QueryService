@@ -20,6 +20,7 @@
     islogin:false,
     uname:"",
     email:"",
+    role:"",
   })
   const updateUserLocalStorage=()=>{
     localStorage.setItem('user',JSON.stringify(user));
@@ -123,6 +124,8 @@
           user.islogin=true;
           user.email=data.email;
           user.uname=data.uname;
+          user.role=data.role;
+          console.log(user);
           await getQuery(data.email.slice(0,data.email.indexOf("@")));
           toast.success("Login Successfully")
           updateUserLocalStorage();
@@ -159,6 +162,7 @@
         }),
       success: (data)=>{
         console.log("Success: "+data);
+        toast.success("Account Created")
       },
       error: (err)=>{
         visibility.Signup=true;
@@ -303,6 +307,20 @@
       console.error("Error fetching query:", err);
     }
   }
+  const delQuery=(queryId)=>{
+    $.ajax({
+      url:backEndUrl+"delQuery?queryId="+queryId,
+      method:"DELETE",
+      success:()=>{
+        visibility.AnswerQuestions=false;
+        visibility.HomePage=true;
+        toast.success("Query Deleted Successfully");
+      },
+      error:(err)=>{
+        toast.success("Error Deleting Query");
+      }
+    })
+  }
   
   var specificQuery=ref("");
   const sendqId=(q)=>{
@@ -315,6 +333,7 @@
       user.islogin=savedUser.islogin;
       user.uname=savedUser.uname;
       user.email=savedUser.email;
+      user.role=savedUser.role;
     }
     await getAllQuery();
     await getAnsweredQuery();
@@ -326,15 +345,15 @@
 </script>
 
 <template>
-  <div class="relative min-h-screen">
+  <div class="relative min-h-screen select-none">
     <div :class="{'blur-sm pointer-events-none':visibility.Login || visibility.Signup}">
-      <NavBar @activate="changeVisibility" :islogin="user.islogin" :user="user" :admin="admin"/>
+      <NavBar @activate="changeVisibility" :islogin="user.islogin" :user="user" />
       <HomePage @activate="changeVisibility" v-if="visibility.HomePage" :islogin="user.islogin" :allQueries="allQueries" @queryId="sendqId"/>
       <askQueries v-if="visibility.AskQueries" :user="user" :query="query"  @addQuery="addQuery" @activate="changeVisibility" @queryId="sendqId"/>
       <Questions v-if="visibility.Questions" :user="user" :allQueries="allQueries" @activate="changeVisibility" @queryId="sendqId"/>
-      <AnsweredQuestions v-if="visibility.answeredQuestions" :user="user" :answeredQueries="answeredQueries" @activate="changeVisibility" @queryId="sendqId"/>
+      <AnsweredQuestions v-if="visibility.answeredQuestions" :user="user" :answeredQueries="answeredQueries" @activate="changeVisibility" @queryId="sendqId" />
       <UnAnsweredQuestions v-if="visibility.unAnsweredQuestions" :user="user" :unAnsweredQueries="unAnsweredQueries" @activate="changeVisibility" @queryId="sendqId"/>
-      <AnswerQuestions v-if="visibility.AnswerQuestions" :user="user" :query="specificQuery" :admin="admin" @answer="postAnswer"/>
+      <AnswerQuestions v-if="visibility.AnswerQuestions" :user="user" :query="specificQuery" @answer="postAnswer" @delQuery="delQuery"/>
     </div>
     <div v-if="visibility.Login" class="fixed inset-0 bg-black opacity-80 flex justify-center items-center z-50">
       <Login @activate="changeVisibility" @uId="checkLogin"/>
