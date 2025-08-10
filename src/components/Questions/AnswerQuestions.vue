@@ -56,9 +56,9 @@
         {{ props.query.ansCount }} 
         {{ props.query.ansCount<= 1 ? "Answer" : "Answers" }}
       </div>
-      <div class="text-gray-600 italic flex justify-between" v-if="props.query.ansCount>=1">
+      <div class="text-gray-600 italic flex justify-between" v-for="ans in answers" v-if="props.query.ansCount>=1">
         <span>
-          {{ props.query.answer }}
+          {{ ans.answer }}
         </span>
         <span>
           <svg @click="delAns(props.query)" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-red-500 cursor-pointer" viewBox="0 0 24 24" fill="currentColor">
@@ -84,7 +84,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { onMounted, reactive, ref } from 'vue';
 
     var ans=ref("");
     const props=defineProps({
@@ -120,6 +120,23 @@ import { ref } from 'vue';
     const delAns=(ansId)=>{
       emit('delAns',ansId);
     }
+    var answers=ref([]);
+    const getAllAnswers=async(queryId)=>{
+      $.ajax({
+        url: import.meta.env.VITE_BACKEND_URL+"getAnswers?queryId=" + queryId,
+        method: "GET",
+        success: (data) => {
+          console.log(data);
+          answers.value = data;
+        },
+        error: (err) => {
+          console.log("Error fetching answers");
+        }
+      });
+    }
+    onMounted(async()=>{
+      await getAllAnswers(props.query.queryId);
+    })
 </script>
 <style scoped>
     
