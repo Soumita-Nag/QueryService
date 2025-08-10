@@ -56,8 +56,16 @@
         {{ props.query.ansCount }} 
         {{ props.query.ansCount<= 1 ? "Answer" : "Answers" }}
       </div>
-      <div class="text-gray-600 italic" v-if="props.query.ansCount>=1">
-        {{ props.query.answer }}
+      <div class="text-gray-600 italic flex justify-between" v-if="props.query.ansCount>=1">
+        <span>
+          {{ props.query.answer }}
+        </span>
+        <span>
+          <svg @click="delAns(props.query)" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-red-500 cursor-pointer" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M9 3V4H4V6H5V19C5 20.1 5.9 21 7 21H17C18.1 21 19 20.1 19 19V6H20V4H15V3H9ZM7 6H17V19H7V6Z" />
+              <path d="M9 8H11V17H9V8ZM13 8H15V17H13V8Z" />
+          </svg>
+        </span>
       </div>
     </div>
 
@@ -83,7 +91,7 @@ import { ref } from 'vue';
         user:Object,
         query:Object,
     })
-    const emit=defineEmits(['answer','delQuery']);
+    const emit=defineEmits(['answer','delQuery','delAns']);
     const postAnswer=()=>{
       const date=new Date();
       const day=date.getDate();
@@ -93,9 +101,11 @@ import { ref } from 'vue';
       const hour=date.getHours();
       const minute=date.getMinutes();
       const time=hour+":"+minute;
+      const ansId=date.getTime().toString(16);
       const answer={  
         queryId:props.query.queryId,
-        adminId:props.admin.email,
+        ansId:ansId,
+        adminId:props.user.email,
         answer: ans.value,
         date: currDate,
         time: time,
@@ -106,6 +116,9 @@ import { ref } from 'vue';
     }
     const delQuery=()=>{
       emit('delQuery',props.query.queryId);
+    }
+    const delAns=(ansId)=>{
+      emit('delAns',ansId);
     }
 </script>
 <style scoped>
