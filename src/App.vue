@@ -311,7 +311,7 @@
       console.error("Error fetching query:", err);
     }
   }
-  const delQuery= (queryId)=>{
+  const delQuery=(queryId)=>{
     $.ajax({
       url:backEndUrl+"delQuery?queryId="+queryId,
       method:"DELETE",
@@ -341,6 +341,23 @@
       },
       error:(err)=>{
         toast.error("Error Deleting Answer");
+      }
+    })
+  }
+  const blockQuery=async (queryId)=>{
+    $.ajax({
+      url:backEndUrl+"blockQuery?queryId="+queryId,
+      method:"GET",
+      success:async()=>{
+        toast.success("Query Blocked Successfully");
+        visibility.AnswerQuestions=false;
+        visibility.HomePage=true;
+        await getAllQuery();
+        await getAnsweredQuery();
+        await getUnAnsweredQuery();
+      },
+      error:(err)=>{
+        toast.success("Error Blocking Query");
       }
     })
   }
@@ -376,7 +393,7 @@
       <Questions v-if="visibility.Questions" :user="user" :allQueries="allQueries" @activate="changeVisibility" @queryId="sendqId"/>
       <AnsweredQuestions v-if="visibility.answeredQuestions" :user="user" :answeredQueries="answeredQueries" @activate="changeVisibility" @queryId="sendqId" />
       <UnAnsweredQuestions v-if="visibility.unAnsweredQuestions" :user="user" :unAnsweredQueries="unAnsweredQueries" @activate="changeVisibility" @queryId="sendqId"/>
-      <AnswerQuestions v-if="visibility.AnswerQuestions" :user="user" :query="specificQuery" @answer="postAnswer" @delQuery="delQuery" @delAns="delAns"/>
+      <AnswerQuestions v-if="visibility.AnswerQuestions" :user="user" :query="specificQuery" @answer="postAnswer" @delQuery="delQuery" @delAns="delAns" @blockQuery="blockQuery"/>
     </div>
     <div v-if="visibility.Login" class="fixed inset-0 bg-black opacity-80 flex justify-center items-center z-50">
       <Login @activate="changeVisibility" @uId="checkLogin"/>

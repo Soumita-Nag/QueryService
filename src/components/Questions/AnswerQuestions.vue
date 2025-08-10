@@ -32,6 +32,9 @@
                     <path d="M9 8H11V17H9V8ZM13 8H15V17H13V8Z" />
                 </svg>
             </span>
+            <span class="flex items-center gap-1" v-if="user.role==='admin'">
+              <span @click="blockQuery(props.query.queryId)" class=" cursor-pointer">🚫</span>
+            </span>
 
         </span>
 
@@ -91,7 +94,7 @@ import { onMounted, reactive, ref } from 'vue';
         user:Object,
         query:Object,
     })
-    const emit=defineEmits(['answer','delQuery','delAns']);
+    const emit=defineEmits(['answer','delQuery','delAns','blockQuery']);
     const postAnswer=()=>{
       const date=new Date();
       const day=date.getDate();
@@ -133,6 +136,9 @@ import { onMounted, reactive, ref } from 'vue';
           console.log("Error fetching answers");
         }
       });
+    }
+    const blockQuery=(queryId)=>{
+      emit('blockQuery',queryId);
     }
     onMounted(async()=>{
       await getAllAnswers(props.query.queryId);
