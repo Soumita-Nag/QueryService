@@ -326,9 +326,9 @@
       }
     })
   }
-  const delAns=(query)=>{
+  const delAns=(ans)=>{
     $.ajax({
-      url:backEndUrl+"delAns?ansId="+query.ansId+"&queryId="+query.queryId,
+      url:backEndUrl+"delAns?ansId="+ans.ansId+"&queryId="+ans.queryId,
       method:"DELETE",
       success:async()=>{
         toast.success("Answer Deleted Successfully");

@@ -64,7 +64,7 @@
           {{ ans.answer }}
         </span>
         <span v-if="props.user.role==='admin'">
-          <svg @click="delAns(props.query)" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-red-500 cursor-pointer" viewBox="0 0 24 24" fill="currentColor">
+          <svg @click="delAns(ans)" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-red-500 cursor-pointer" viewBox="0 0 24 24" fill="currentColor">
               <path d="M9 3V4H4V6H5V19C5 20.1 5.9 21 7 21H17C18.1 21 19 20.1 19 19V6H20V4H15V3H9ZM7 6H17V19H7V6Z" />
               <path d="M9 8H11V17H9V8ZM13 8H15V17H13V8Z" />
           </svg>
@@ -120,8 +120,8 @@ import { onMounted, reactive, ref } from 'vue';
     const delQuery=()=>{
       emit('delQuery',props.query.queryId);
     }
-    const delAns=(ansId)=>{
-      emit('delAns',ansId);
+    const delAns=(ans)=>{
+      emit('delAns',ans);
     }
     var answers=ref([]);
     const getAllAnswers=async(queryId)=>{
