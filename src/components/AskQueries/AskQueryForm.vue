@@ -67,7 +67,7 @@ const AddQuery=()=>{
       query:query.value,
       date:currDate,
       time: currTime,
-      status:"Pending",
+      status:"pending",
     } 
     category="Select Category";
     query.value="";

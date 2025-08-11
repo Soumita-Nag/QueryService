@@ -66,6 +66,11 @@
     }
     if(source==='Login'){
       visibility.Login=newVisibility;
+      if(newVisibility===false){
+        visibility.HomePage=true
+        visibility.AnswerQuestions=false;
+        visibility.Questions=false;
+      }
     }
     if(source==='Questions'){
       visibility.Questions=newVisibility;
@@ -194,11 +199,13 @@
       data: JSON.stringify(payload),
       // data: {val},
       success: async(data1)=>{
+        toast.success("Query submitted successfully");
         console.log("Success: "+ data1);
         await getAllQuery();
         await getQuery(user.email.slice(0,user.email.indexOf("@")));
       },
       error:(err)=>{
+        toast.error("Error submitting the query");
         console.log("Error: "+err);
       }
     })
