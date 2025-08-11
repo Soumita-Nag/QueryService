@@ -6,7 +6,7 @@
     <div class="space-y-4 border-b pb-4">
       <!-- Header -->
       <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-2">
-        <span class="text-xl font-semibold text-gray-800">{{ props.query.queryTitle }}</span>
+        <span class="text-xl font-semibold text-gray-800 select-text">{{ props.query.queryTitle }}</span>
         <span class="text-sm text-gray-600 flex gap-6 items-center">
             <span class="flex items-center gap-1">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-pink-500" viewBox="0 0 20 20" fill="currentColor">
@@ -41,7 +41,7 @@
       </div>
 
       <!-- Body -->
-      <div class="text-gray-700 text-base">
+      <div class="text-gray-700 text-base select-text">
         {{ props.query.query }}
       </div>
 
@@ -60,7 +60,7 @@
         {{ props.query.ansCount<= 1 ? "Answer" : "Answers" }}
       </div>
       <div class="text-gray-600 italic flex justify-between" v-for="ans in answers" v-if="props.query.ansCount>=1">
-        <span>
+        <span class="select-text">
           {{ ans.answer }}
         </span>
         <span v-if="props.user.role==='admin'">
