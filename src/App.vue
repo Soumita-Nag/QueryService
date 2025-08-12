@@ -9,6 +9,7 @@
   import AnsweredQuestions from './components/Questions/AnsweredQuestions.vue';
   import UnAnsweredQuestions from './components/Questions/UnAnsweredQuestions.vue';
   import ForgetPassword from './components/ForgetPassword.vue';
+  import ResetPassword from './components/ResetPassword.vue';
 
   import { onBeforeMount, onMounted, reactive,ref } from 'vue';
   import { useToast } from 'vue-toastification';
@@ -36,6 +37,7 @@
   var query=ref([]);
   var answeredQueries=ref([]);
   var unAnsweredQueries=ref([]);
+  var recoverEmail=ref("");
 
   const visibility=reactive({
     HomePage:true,
@@ -47,6 +49,7 @@
     Signup:false,
     Login:false,
     ForgetPassword:false,
+    ResetPassword:false,
   })
   const changeVisibility=async(newVisibility,source)=>{
     if(source==='AskQueries'){
@@ -120,6 +123,9 @@
       // alert(newVisibility)
       visibility.Login=false;
       visibility.ForgetPassword=newVisibility;
+    }
+    if(source==='ResetPassword'){
+      visibility.ResetPassword=newVisibility;
     }
   }
   const checkLogin=(uId)=>{
@@ -390,7 +396,9 @@
       }),
       success: async(data,txtstatus,jqXHR)=>{
         if(jqXHR.status==200){
-          
+          visibility.ResetPassword=true;
+          visibility.ForgetPassword=false;
+          recoverEmail=uId.email;
           console.log(user);
           toast.success("User Authentication Successfull")
         }
@@ -409,6 +417,39 @@
       }
     })
   }
+  const resetPassword=(uId)=>{
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^&*!()_+=\-[\]{};':"\\|,.<>/?]).{8,}$/;
+    if(!passwordRegex.test(uId.password)){
+      visibility.ResetPassword=true;
+      toast.error("Wrong Input Format!!")
+      return;
+    }
+    else{
+      $.ajax({
+        url:backEndUrl+"resetPassword",
+        method:"POST",
+        contentType:"application/json",
+        data: JSON.stringify({
+          email:recoverEmail,
+          password:uId.password,
+        }),
+      success: (data,txtstatus,jqXHR)=>{
+        if(jqXHR.status==201){
+          toast.error("User Doesn't Exists!!");
+        }
+        else{
+          visibility.ResetPassword=false;
+          toast.success("Password Changed Successfully")
+        }
+      },
+      error: (err)=>{
+        toast.error("Something went worng!!");
+        console.log("Error: "+err);
+      }
+    })
+    }
+  }
+
   var specificQuery=ref("");
   const sendqId=(q)=>{
       specificQuery=q;
@@ -433,7 +474,7 @@
 
 <template>
   <div class="relative min-h-screen select-none">
-    <div :class="{'blur-sm pointer-events-none':visibility.Login || visibility.Signup || visibility.ForgetPassword}">
+    <div :class="{'blur-sm pointer-events-none':visibility.Login || visibility.Signup || visibility.ForgetPassword || visibility.ResetPassword}">
       <NavBar @activate="changeVisibility" :islogin="user.islogin" :user="user" />
       <HomePage @activate="changeVisibility" v-if="visibility.HomePage" :islogin="user.islogin" :allQueries="allQueries" @queryId="sendqId"/>
       <askQueries v-if="visibility.AskQueries" :user="user" :query="query"  @addQuery="addQuery" @activate="changeVisibility" @queryId="sendqId"/>
@@ -449,7 +490,10 @@
       <Signup @activate="changeVisibility" @uId="createAccount"/>
     </div>
     <div v-if="visibility.ForgetPassword" class="fixed inset-0 bg-black opacity-80 flex justify-center items-center z-50">
-      <ForgetPassword @activate="changeVisibility" @uId="submitForgetPassword"/>
+      <ForgetPassword @activate="changeVisibility" @uId="submitForgetPassword" />
+    </div>
+    <div v-if="visibility.ResetPassword" class="fixed inset-0 bg-black opacity-80 flex justify-center items-center z-50">
+      <ResetPassword @activate="changeVisibility" @uId="resetPassword"/>
     </div>
   </div>
 </template>
