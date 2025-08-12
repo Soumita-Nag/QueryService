@@ -149,7 +149,8 @@
   }
   const createAccount=(uId)=>{
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^&*!()_+=\-[\]{};':"\\|,.<>/?]).{8,}$/;
-    if(!passwordRegex.test(uId.password)){
+    if(!passwordRegex.test(uId.value.password)){
+      // alert(uId.value.password)
       visibility.Signup=true;
       toast.error("Wrong Input Format!!")
       return;
@@ -160,9 +161,11 @@
         method:"POST",
         contentType:"application/json",
         data: JSON.stringify({
-          uname:uId.uname,
-          email:uId.email,
-          password:uId.password,
+          uname:uId.value.uname,
+          email:uId.value.email,
+          password:uId.value.password,
+          seqQuestionNo:uId.value.seqQuestionNo,
+          seqAns:uId.value.seqAns,
           role:"user"
         }),
       success: (data)=>{

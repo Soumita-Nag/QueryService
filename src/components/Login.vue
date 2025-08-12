@@ -2,7 +2,7 @@
   <div class="flex justify-center">
     <form
       @submit.prevent="submitLogin"
-      class="w-full max-w-md bg-white shadow-lg rounded-lg px-8 mt-20 h-94"
+      class="w-full max-w-md bg-white shadow-lg rounded-lg px-8 mt-20 h-98"
     >
         <button @click="closeModal" class="text-3xl cursor-pointer relative left-63 text-gray-600 hover:text-red-600">&times;</button>
       <h2 class="text-2xl font-bold mb-6 text-center text-gray-700">
@@ -61,6 +61,9 @@
           </svg>
         </span>
       </div>
+      <div>
+        <a @click="forgetPassword" class="text-sm text-blue-700 cursor-pointer">Forget password?</a>
+      </div>
       <div class="flex gap-1 mb-4">
         <p class="text-sm">Don't have an account? </p>
         <a @click="showSignup" class="text-[16px] text-blue-700 cursor-pointer">create account</a>
@@ -93,6 +96,9 @@ const closeModal=()=>{
 const showSignup=()=>{
     emit('activate',false,'Login');
     emit('activate',true,'Signup')
+}
+const forgetPassword=()=>{
+  alert("forget password")
 }
 </script>
 <style scoped></style>
