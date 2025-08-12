@@ -98,7 +98,8 @@ const showSignup=()=>{
     emit('activate',true,'Signup')
 }
 const forgetPassword=()=>{
-  alert("forget password")
+  // emit('activate',false,'Login');
+  emit('activate',true,'ForgetPassword');
 }
 </script>
 <style scoped></style>

@@ -8,6 +8,7 @@
   import AnswerQuestions from './components/Questions/AnswerQuestions.vue';
   import AnsweredQuestions from './components/Questions/AnsweredQuestions.vue';
   import UnAnsweredQuestions from './components/Questions/UnAnsweredQuestions.vue';
+  import ForgetPassword from './components/ForgetPassword.vue';
 
   import { onBeforeMount, onMounted, reactive,ref } from 'vue';
   import { useToast } from 'vue-toastification';
@@ -45,6 +46,7 @@
     AnswerQuestions:false,
     Signup:false,
     Login:false,
+    ForgetPassword:false,
   })
   const changeVisibility=async(newVisibility,source)=>{
     if(source==='AskQueries'){
@@ -113,6 +115,11 @@
       visibility.HomePage=!newVisibility;
       visibility.AskQueries=!newVisibility;
       visibility.AnswerQuestions=newVisibility;
+    }
+    if(source==='ForgetPassword'){
+      // alert(newVisibility)
+      visibility.Login=false;
+      visibility.ForgetPassword=newVisibility;
     }
   }
   const checkLogin=(uId)=>{
@@ -371,7 +378,37 @@
       }
     })
   }
-  
+  const submitForgetPassword=(uId)=>{
+    $.ajax({
+      url:backEndUrl+"forgetPassword",
+      method:"POST",
+      contentType:"application/json",
+      data: JSON.stringify({
+        email:uId.email,
+        seqQuestionNo:uId.seqQuestionNo,
+        seqAns:uId.seqAns,
+      }),
+      success: async(data,txtstatus,jqXHR)=>{
+        if(jqXHR.status==200){
+          
+          console.log(user);
+          toast.success("User Authentication Successfull")
+        }
+        else if(jqXHR.status==201){
+          // console.log("Invalid Credentials !")
+          // visibility.Login=true;
+          toast.error("Invalid Credentials !");
+
+        }
+        else{
+          toast.error("User doesn't exists!!")
+        }
+      },
+      error: (err)=>{
+        console.log("User Authentication Failed: "+err);
+      }
+    })
+  }
   var specificQuery=ref("");
   const sendqId=(q)=>{
       specificQuery=q;
@@ -396,7 +433,7 @@
 
 <template>
   <div class="relative min-h-screen select-none">
-    <div :class="{'blur-sm pointer-events-none':visibility.Login || visibility.Signup}">
+    <div :class="{'blur-sm pointer-events-none':visibility.Login || visibility.Signup || visibility.ForgetPassword}">
       <NavBar @activate="changeVisibility" :islogin="user.islogin" :user="user" />
       <HomePage @activate="changeVisibility" v-if="visibility.HomePage" :islogin="user.islogin" :allQueries="allQueries" @queryId="sendqId"/>
       <askQueries v-if="visibility.AskQueries" :user="user" :query="query"  @addQuery="addQuery" @activate="changeVisibility" @queryId="sendqId"/>
@@ -410,6 +447,9 @@
     </div>
     <div v-if="visibility.Signup" class="fixed inset-0 bg-black opacity-80 flex justify-center items-center z-50">
       <Signup @activate="changeVisibility" @uId="createAccount"/>
+    </div>
+    <div v-if="visibility.ForgetPassword" class="fixed inset-0 bg-black opacity-80 flex justify-center items-center z-50">
+      <ForgetPassword @activate="changeVisibility" @uId="submitForgetPassword"/>
     </div>
   </div>
 </template>
