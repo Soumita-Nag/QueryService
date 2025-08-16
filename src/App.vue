@@ -161,24 +161,24 @@
     })
   }
   const createAccount=(uId)=>{
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^&*!()_+=\-[\]{};':"\\|,.<>/?]).{8,}$/;
-    if(!passwordRegex.test(uId.value.password)){
-      // alert(uId.value.password)
-      visibility.Signup=true;
-      toast.error("Wrong Input Format!!")
-      return;
-    }
-    else{
+    // const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^&*!()_+=\-[\]{};':"\\|,.<>/?]).{8,}$/;
+    // if(!passwordRegex.test(uId.value.password)){
+    //   // alert(uId.value.password)
+    //   visibility.Signup=true;
+    //   toast.error("Wrong Input Format!!")
+    //   return;
+    // }
+    // else{
       $.ajax({
         url:backEndUrl+"signup",
         method:"POST",
         contentType:"application/json",
         data: JSON.stringify({
-          uname:uId.value.uname,
-          email:uId.value.email,
-          password:uId.value.password,
-          seqQuestionNo:uId.value.seqQuestionNo,
-          seqAns:uId.value.seqAns,
+          uname:uId.uname,
+          email:uId.email,
+          password:uId.password,
+          seqQuestionNo:uId.seqQuestionNo,
+          seqAns:uId.seqAns,
           role:"user"
         }),
       success: (data)=>{
@@ -192,7 +192,7 @@
       }
     })
     }
-  }
+  // }
   const addQuery= (val)=>{
     // console.log(val);
     const payload={
@@ -414,6 +414,7 @@
       },
       error: (err)=>{
         console.log("User Authentication Failed: "+err);
+        toast.error("User Authentication Failed")
       }
     })
   }

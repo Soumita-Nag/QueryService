@@ -2,9 +2,9 @@
   <div class="flex justify-center">
     <form
       @submit.prevent="submitSignup"
-      class="w-full max-w-md bg-white shadow-lg rounded-lg px-8 h-162"
+      class="w-full max-w-md bg-white shadow-lg rounded-lg px-8 h-160"
     >
-        <button @click="closeModal" class="text-3xl cursor-pointer relative left-96 text-gray-600 hover:text-red-600">&times;</button>
+        <button @click="closeModal" type="button" class="text-3xl cursor-pointer relative left-96 text-gray-600 hover:text-red-600">&times;</button>
       <h2 class="text-2xl font-bold mb-6 text-center text-gray-700">
         Create an Account
       </h2>
@@ -20,25 +20,28 @@
         />
       </div>
 
-      <div class="mb-4">
+      <div :class="checkUserExists?'mb-[0px]':'mb-4'">
         <label for="email" class="block text-gray-600 mb-1">Email</label>
-        <input
+        <input @keyup="checkUser"
           type="email" v-model="uId.email"
           name="email"
           id="email"
-          class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+          class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 "
+          :class="checkUserExists?'focus:ring-red-600':'focus:ring-blue-400'"
           required
         />
+        <p class="text-[0.65rem] text-red-700" v-if="checkUserExists">*User Already Exists!!</p>
       </div>
 
-      <div class="mb-4 relative">
+      <div class=" relative" :class="checkValidPassword?'mb-[39px]':'mb-2'">
         <label for="pwd" class="block text-gray-600 mb-1">Password</label>
         <input
-          :type="showPassword ? 'text' : 'password'"
+          :type="showPassword ? 'text' : 'password'" @keyup="checkPassword"
           v-model="uId.password"
           name="pwd"
           id="pwd"
-          class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+          class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 "
+          :class="checkValidPassword?'focus:ring-blue-400':'focus:ring-red-600'"
           required
         />
         <!-- Eye icon -->
@@ -71,7 +74,7 @@
               d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7a10.05 10.05 0 012.202-3.568M6.72 6.72a10.042 10.042 0 0114.01 14.01M3 3l18 18" />
           </svg>
         </span>
-        <p class="text-[0.65rem] text-red-700">*Password must be minimum 8 characters long, including uppercase, lowercase, digits and spacial characters.</p>
+        <p class="text-[0.65rem] text-red-700" v-if="!checkValidPassword">*Password must be minimum 8 characters long, including uppercase, lowercase, digits and spacial characters.</p>
       </div>
       <div class="flex flex-col mb-4 gap-4">
         <label for="seqQustion" class="block text-gray-600 mb-1">Select Security Question</label>
@@ -100,7 +103,8 @@
       </div>
       <button
         type="submit"
-        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded transition duration-300"
+        class="w-full bg-blue-600 cursor-pointer disabled:bg-gray-500 disabled:cursor-auto hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded transition duration-300"   
+        :disabled="checkUserExists || !checkValidPassword"
       >
         Submit
       </button>
@@ -108,9 +112,12 @@
   </div>
 </template>
 <script setup>
-import { ref } from 'vue';
+import { reactive, ref } from 'vue';
 const showPassword = ref(false);
 const emit=defineEmits(['activate','uId']);
+const backEndUrl=import.meta.env.VITE_BACKEND_URL;
+const checkUserExists=ref(false)
+const checkValidPassword=ref(false)
 const uId=ref({
   uname:"",
   email:"",
@@ -120,7 +127,7 @@ const uId=ref({
 })
 const submitSignup = () => {
   emit('activate',false,'Signup');
-  emit('uId',uId);
+  emit('uId',uId.value);
 };
 const closeModal=()=>{
     emit('activate',false,'Signup');
@@ -128,6 +135,33 @@ const closeModal=()=>{
 const showLogin=()=>{
     emit('activate',false,'Signup');
     emit('activate',true,'Login');
+}
+const checkUser=()=>{
+  const email=uId.value.email;
+  $.ajax({
+    url: backEndUrl+"checkUser?email="+email,
+    method: "GET",
+    success: (data,txtstatus,jqXHR) => {
+      // console.log(jqXHR.status)
+      if(jqXHR.status==201)
+      checkUserExists.value=true;
+      else
+      checkUserExists.value=false;
+    },
+    error: (err) => {
+      console.log(err)
+    }
+  })
+}
+const checkPassword=()=>{
+  const pass=uId.value.password;
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^&*!()_+=\-[\]{};':"\\|,.<>/?]).{8,}$/;
+  if(passwordRegex.test(pass)){
+    checkValidPassword.value=true;
+  }
+  else{
+    checkValidPassword.value=false;
+  }
 }
 </script>
 <style scoped></style>
