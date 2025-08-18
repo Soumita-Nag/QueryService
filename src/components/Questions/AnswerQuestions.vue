@@ -79,6 +79,12 @@
         <div class="text-xs text-gray-500 pt-2">
           {{ ans.adminId.slice(0,ans.adminId.indexOf("@")) }} answered on {{ ans.date }} at {{ ans.time }}
         </div>
+        <div v-if="!ans.satisfactoryRateUpdated && user.islogin && user.email==query.userId+'@gmail.com'"  class="flex gap-4">
+          <span>Are you satisfied?</span>
+          <span><input type="range" min="0" max="100" v-model="rate[ans.ansId]" class=" cursor-pointer"></span>
+          <span>{{ rate[ans.ansId] }}%</span>
+          <span><button type="button" @click="updateSatisfactoryRate(ans.ansId)" class=" bg-green-300 font-semibold border-2 border-green-700 rounded-lg px-2 py-0.5 text-sm cursor-pointer">submit</button></span>
+        </div>
       </div>
     </div>
 
@@ -98,8 +104,10 @@
 
 <script setup>
 import { onMounted, reactive, ref } from 'vue';
-
+import { useToast } from 'vue-toastification';
+const toast=useToast();
     var ans=ref("");
+    const rate=ref({});
     const props=defineProps({
         user:Object,
         query:Object,
@@ -123,6 +131,8 @@ import { onMounted, reactive, ref } from 'vue';
         date: currDate,
         time: time,
         rank: 1,
+        satisfactoryRate: 100.0,
+        satisfactoryRateUpdated: false,
       }
       ans.value="";
       emit('answer',answer);
@@ -141,6 +151,11 @@ import { onMounted, reactive, ref } from 'vue';
         success: (data) => {
           console.log(data);
           answers.value = data;
+          data.forEach(e => {
+            if(!e.satisfactoryRateUpdated){
+              rate.value[e.ansId]=100;
+            }
+          });
         },
         error: (err) => {
           console.log("Error fetching answers");
@@ -149,6 +164,19 @@ import { onMounted, reactive, ref } from 'vue';
     }
     const blockQuery=(queryId)=>{
       emit('blockQuery',queryId);
+    }
+    const updateSatisfactoryRate=(id)=>{
+      alert(rate.value[id]);
+      $.ajax({
+        url: import.meta.env.VITE_BACKEND_URL+"updateSatiesfactoryRate?ansId=" +id+"&rate="+rate.value[id],
+        method: "GET",
+        success: (data) => {
+          toast.success("Thanks for your feedback")
+        },
+        error: (err) => {
+          console.log("Error submitting feedback");
+        }
+      })
     }
     onMounted(async()=>{
       await getAllAnswers(props.query.queryId);
