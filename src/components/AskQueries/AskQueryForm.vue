@@ -5,17 +5,39 @@
         Hello {{ props.user.uname }} 👋
       </div>
       <div>
-        <label for="category" class="block mb-2 text-sm font-medium text-gray-600">Select Category</label>
-        <select id="category" v-model="category" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400">
-          <option disabled selected>Select Category</option>
-          <option value="Programming">Programming</option>
-          <option value="History">History</option>
-          <option value="Healthcare">Healthcare</option>
-          <option value="General Knowledge">General Knowledge</option>
-          <option value="Sports">Sports</option>
-          <option value="Space Science">Space Science</option>
-          <option value="Mythology">Mythology</option>
-        </select>
+        <label for="tags" class="block mb-2 text-sm font-medium text-gray-600">Add Tags</label>
+        <div class="flex gap-2">
+          <input
+            type="text" @keyup.enter="addTags"
+            v-model="tag"
+            id="tags"
+            placeholder="Enter tags"
+            class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <button
+            type="button"
+            @click="addTags"
+            class="px-4 py-2 cursor-pointer bg-green-500 text-white rounded-md hover:bg-green-600 transition"
+          >
+            +
+          </button>
+        </div>
+        <div class="mt-3 flex flex-wrap gap-2">
+          <span
+            v-for="(t, i) in tags"
+            :key="i"
+            class="bg-blue-100 text-blue-700 text-sm px-3 py-1 rounded-full flex items-center gap-2"
+          >
+            {{ t }}
+            <button
+              type="button"
+              class="text-blue-500 hover:text-red-500"
+              @click="removeTag(i)"
+            >
+              &times;
+            </button>
+          </span>
+        </div>
       </div>
       <div>
         <label for="questionHead" class="block mb-2 text-sm font-medium text-gray-600">Question Title</label>
@@ -39,6 +61,8 @@
 <script setup>
 import { defineProps, ref } from 'vue';
 var category="Select Category";
+var tags=ref([]);
+var tag=ref("");
 var query=ref("");
 var queryTitle=ref("");
 const props=defineProps({
@@ -57,13 +81,18 @@ const AddQuery=()=>{
     const currTime=hour+":"+minute;
     const queryId=time.toString(16);
     const userId=props.user.email.slice(0,props.user.email.indexOf("@"));
-    if(category=="Select Category")
-    category="General Knowledge"
+    // if(category=="Select Category")
+    // category="General Knowledge"
+    if(tag.value.trim()!==""){
+      tags.value.push(tag.value.trim());
+      tag.value="";
+    }
     const questionSchema={
       queryId:queryId,
       userId:userId,
       category:category,
-      queryTitle:queryTitle.value,
+      category:tags.value,
+      // queryTitle:queryTitle.value,
       query:query.value,
       date:currDate,
       time: currTime,
@@ -72,9 +101,19 @@ const AddQuery=()=>{
     category="Select Category";
     query.value="";
     queryTitle.value="";
+    tags.value=[];
     emit('addQuery',questionSchema);
     // console.log(questionSchema);
 }
+const addTags=()=>{
+  if(tag.value.trim()!==""){
+    tags.value.push(tag.value.trim());
+    tag.value="";
+  }
+}
+const removeTag = (index) => {
+  tags.value.splice(index, 1);
+};
 </script>
 <style scoped>
     

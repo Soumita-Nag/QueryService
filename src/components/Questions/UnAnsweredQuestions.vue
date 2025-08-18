@@ -5,8 +5,8 @@
     <div>
       <h1 class="text-2xl font-bold text-gray-800">{{ p.queryTitle }}</h1>
       <h4 class="text-md text-gray-600 mt-2 truncate">{{ p.query }}</h4>
-      <button class="mt-2 px-3 py-1 bg-blue-100 text-blue-700 text-sm font-medium rounded-full">
-        {{ p.category }}
+      <button v-for="cat in p.category" class="mt-2 mr-4 px-3 py-1 bg-blue-100 text-blue-700 text-sm font-medium rounded-full">
+        {{ cat }}
       </button>
     </div>
     <div class="flex gap-6 text-gray-600 text-sm items-center">

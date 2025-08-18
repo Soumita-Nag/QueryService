@@ -47,8 +47,8 @@
 
       <!-- Category -->
       <div>
-        <button class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm font-semibold">
-          {{ props.query.category }}
+        <button class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm font-semibold mr-4" v-for="cat in props.query.category">
+          {{ cat }}
         </button>
       </div>
     </div>

@@ -7,7 +7,7 @@
         <div @click="showAnswer(query)">
         <div class="text-sm text-gray-500 mb-2 flex justify-between ">
           <span class="text-blue-700">{{ query.date }}, <span class="text-[0.7rem]">{{ query.time }}</span></span>
-          <span><button class=" px-3 py-1 bg-blue-100 text-blue-700 text-[0.65rem] font-medium rounded-full">{{ query.category }}</button></span>
+          <span><button v-for="cat in query.category" class=" px-3 py-1 ml-2 bg-blue-100 text-blue-700 text-[0.65rem] font-medium rounded-full">{{ cat }}</button></span>
         </div>
         <div class="font-semibold mb-1">{{ query.queryTitle }}</div>
         <div class="text-gray-700 text-sm truncate mb-2">
