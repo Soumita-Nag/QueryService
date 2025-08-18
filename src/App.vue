@@ -279,7 +279,7 @@
       success: async(data)=>{
         toast.success("Answer Submitted Successfully");
         visibility.AnswerQuestions=false;
-        visibility.unAnsweredQuestions=true;
+        visibility.answeredQuestions=true;
         console.log("Success: "+ data);
         await getAnsweredQuery();
         await getUnAnsweredQuery();

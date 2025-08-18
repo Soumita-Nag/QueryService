@@ -4,6 +4,7 @@
     
     <!-- Question Section -->
     <div class="space-y-4 border-b pb-4">
+      
       <!-- Header -->
       <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-2">
         <span class="text-xl font-semibold text-gray-800 select-text">{{ props.query.queryTitle }}</span>
@@ -39,7 +40,7 @@
         </span>
 
       </div>
-
+      
       <!-- Body -->
       <div class="text-gray-700 text-base select-text">
         {{ props.query.query }}
@@ -50,25 +51,34 @@
         <button class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm font-semibold mr-4" v-for="cat in props.query.category">
           {{ cat }}
         </button>
+        <div class="text-xs text-gray-500 pt-2">
+          {{ props.query.userId }} asked on {{ props.query.date }} at {{ props.query.time }}
+        </div>
       </div>
     </div>
-
+    
     <!-- Answers Section -->
     <div class="space-y-2 border-b pb-4">
       <div class="text-lg font-medium text-gray-800">
         {{ props.query.ansCount }} 
         {{ props.query.ansCount<= 1 ? "Answer" : "Answers" }}
       </div>
-      <div class="text-gray-600 italic flex justify-between" v-for="ans in answers" v-if="props.query.ansCount>=1">
+      <div class="text-gray-700 italic" v-for="(ans,index) in answers.slice(0).reverse()" v-if="props.query.ansCount>=1">
+        <span class="flex justify-between w-full">
         <span class="select-text">
-          {{ ans.answer }}
+          {{ index+1 }}. {{ ans.answer }}
         </span>
+        
         <span v-if="props.user.role==='admin'">
           <svg @click="delAns(ans)" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-red-500 cursor-pointer" viewBox="0 0 24 24" fill="currentColor">
               <path d="M9 3V4H4V6H5V19C5 20.1 5.9 21 7 21H17C18.1 21 19 20.1 19 19V6H20V4H15V3H9ZM7 6H17V19H7V6Z" />
               <path d="M9 8H11V17H9V8ZM13 8H15V17H13V8Z" />
           </svg>
         </span>
+        </span>
+        <div class="text-xs text-gray-500 pt-2">
+          {{ ans.adminId.slice(0,ans.adminId.indexOf("@")) }} answered on {{ ans.date }} at {{ ans.time }}
+        </div>
       </div>
     </div>
 
@@ -101,8 +111,8 @@ import { onMounted, reactive, ref } from 'vue';
       const month=date.getMonth();
       const year=date.getFullYear();
       const currDate=day+"-"+(month+1)+"-"+year;
-      const hour=date.getHours();
-      const minute=date.getMinutes();
+      const hour=(date.getHours()<=9?"0":"")+date.getHours();
+      const minute=(date.getMinutes()<=9?"0":"")+date.getMinutes();
       const time=hour+":"+minute;
       const ansId=date.getTime().toString(16);
       const answer={  

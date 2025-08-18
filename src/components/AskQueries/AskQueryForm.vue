@@ -92,7 +92,7 @@ const AddQuery=()=>{
       userId:userId,
       category:category,
       category:tags.value,
-      // queryTitle:queryTitle.value,
+      queryTitle:queryTitle.value,
       query:query.value,
       date:currDate,
       time: currTime,
