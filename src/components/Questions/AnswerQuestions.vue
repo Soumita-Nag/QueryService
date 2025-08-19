@@ -66,7 +66,7 @@
       <div class="text-gray-700 italic" v-for="(ans,index) in answers.slice(0).reverse()" v-if="props.query.ansCount>=1">
         <span class="flex justify-between w-full">
         <span class="select-text">
-          {{ index+1 }}. {{ ans.answer }}
+          <span class=" select-none">{{ index+1 }}. </span> {{ ans.answer }}
         </span>
         
         <span v-if="props.user.role==='admin'">
@@ -76,8 +76,11 @@
           </svg>
         </span>
         </span>
-        <div class="text-xs text-gray-500 pt-2">
+        <div class="text-xs text-gray-500 pt-2 flex justify-between">
+          <span>
           {{ ans.adminId.slice(0,ans.adminId.indexOf("@")) }} answered on {{ ans.date }} at {{ ans.time }}
+          </span>
+          <span>Satisfactory Rate : {{ans.satisfactoryRate}}%</span>
         </div>
         <div v-if="!ans.satisfactoryRateUpdated && user.islogin && user.email==query.userId+'@gmail.com'"  class="flex gap-4">
           <span>Are you satisfied?</span>
@@ -112,7 +115,7 @@ const toast=useToast();
         user:Object,
         query:Object,
     })
-    const emit=defineEmits(['answer','delQuery','delAns','blockQuery']);
+    const emit=defineEmits(['answer','delQuery','delAns','blockQuery','activate','updateSatRate']);
     const postAnswer=()=>{
       const date=new Date();
       const day=date.getDate();
@@ -166,17 +169,7 @@ const toast=useToast();
       emit('blockQuery',queryId);
     }
     const updateSatisfactoryRate=(id)=>{
-      alert(rate.value[id]);
-      $.ajax({
-        url: import.meta.env.VITE_BACKEND_URL+"updateSatiesfactoryRate?ansId=" +id+"&rate="+rate.value[id],
-        method: "GET",
-        success: (data) => {
-          toast.success("Thanks for your feedback")
-        },
-        error: (err) => {
-          console.log("Error submitting feedback");
-        }
-      })
+      emit('updateSatRate',[id,rate.value[id]]);
     }
     onMounted(async()=>{
       await getAllAnswers(props.query.queryId);

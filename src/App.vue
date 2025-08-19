@@ -8,6 +8,7 @@
   import AnswerQuestions from './components/Questions/AnswerQuestions.vue';
   import AnsweredQuestions from './components/Questions/AnsweredQuestions.vue';
   import UnAnsweredQuestions from './components/Questions/UnAnsweredQuestions.vue';
+  import UnSatisfiedQuestions from './components/Questions/UnSatisfiedQuestions.vue';
   import ForgetPassword from './components/ForgetPassword.vue';
   import ResetPassword from './components/ResetPassword.vue';
 
@@ -37,6 +38,7 @@
   var query=ref([]);
   var answeredQueries=ref([]);
   var unAnsweredQueries=ref([]);
+  var unSatisfiedQueries=ref([]);
   var recoverEmail=ref("");
 
   const visibility=reactive({
@@ -50,12 +52,14 @@
     Login:false,
     ForgetPassword:false,
     ResetPassword:false,
+    unSatisfiedQueries:false,
   })
   const changeVisibility=async(newVisibility,source)=>{
     if(source==='AskQueries'){
       visibility.AskQueries=newVisibility;
       visibility.HomePage=!newVisibility;
       visibility.Questions=!newVisibility;
+      visibility.AnswerQuestions=!newVisibility;
       await getQuery(user.email.slice(0,user.email.indexOf("@")));
     }
     if(source==='HomePage'){
@@ -65,6 +69,7 @@
       visibility.unAnsweredQuestions=!newVisibility;
       visibility.Questions=!newVisibility;
       visibility.AnswerQuestions=!newVisibility;
+      visibility.unSatisfiedQueries=!newVisibility;
     }
     if(source==='Signup'){
       visibility.Signup=newVisibility;
@@ -89,6 +94,15 @@
       visibility.HomePage=!newVisibility;
       visibility.AskQueries=!newVisibility;
       visibility.AnswerQuestions=!newVisibility;
+      visibility.unSatisfiedQueries=!newVisibility;
+    }
+    if(source==='unSatisfiedQueries'){
+      visibility.unSatisfiedQueries=newVisibility;
+      visibility.unAnsweredQuestions=!newVisibility;
+      visibility.HomePage=!newVisibility;
+      visibility.AskQueries=!newVisibility;
+      visibility.AnswerQuestions=!newVisibility;
+      visibility.answeredQuestions=!newVisibility;
     }
     if(source==='unAnsweredQuestions'){
       visibility.unAnsweredQuestions=newVisibility;
@@ -96,6 +110,7 @@
       visibility.HomePage=!newVisibility;
       visibility.AskQueries=!newVisibility;
       visibility.AnswerQuestions=!newVisibility;
+      visibility.unSatisfiedQueries=!newVisibility;
     }
     if(source==='Logout'){
       user.islogin=false;
@@ -108,6 +123,7 @@
       visibility.unAnsweredQuestions=false;
       visibility.AskQueries=false;
       visibility.AnswerQuestions=false;
+      visibility.unSatisfiedQueries=!newVisibility;
       updateUserLocalStorage();
 
     }
@@ -118,6 +134,7 @@
       visibility.HomePage=!newVisibility;
       visibility.AskQueries=!newVisibility;
       visibility.AnswerQuestions=newVisibility;
+      visibility.unSatisfiedQueries=!newVisibility;
     }
     if(source==='ForgetPassword'){
       // alert(newVisibility)
@@ -192,7 +209,6 @@
       }
     })
     }
-  // }
   const addQuery= (val)=>{
     // console.log(val);
     const payload={
@@ -290,6 +306,21 @@
       }
     })
   }
+  const updateSatisfactoryRate=(arr)=>{
+    $.ajax({
+        url:backEndUrl+"updateSatiesfactoryRate?ansId=" +arr[0]+"&rate="+arr[1],
+        method: "GET",
+        success: async(data) => {
+          toast.success("Thanks for your feedback")
+          visibility.AnswerQuestions=false;
+          visibility.AskQueries=true;
+          await getUnSatisfiedQueries();
+        },
+        error: (err) => {
+          console.log("Error submitting feedback");
+        }
+      })
+  }
   const getAnsweredQuery=async()=>{
     try {
       const data = await new Promise((resolve, reject) => {
@@ -329,6 +360,28 @@
 
       unAnsweredQueries.value = data;
       console.log(unAnsweredQueries.value);
+
+    } catch (err) {
+      console.error("Error fetching query:", err);
+    }
+  }
+  const getUnSatisfiedQueries=async()=>{
+    try {
+      const data = await new Promise((resolve, reject) => {
+        $.ajax({
+          url: backEndUrl+"unSatisfiedQueries",
+          method: "GET",
+          success: (data) => {
+            resolve(data);
+          },
+          error: (err) => {
+            reject(err);
+          }
+        });
+      });
+
+      unSatisfiedQueries.value = data;
+      // console.log(unAnsweredQueries.value);
 
     } catch (err) {
       console.error("Error fetching query:", err);
@@ -467,6 +520,7 @@
     await getAllQuery();
     await getAnsweredQuery();
     await getUnAnsweredQuery();
+    await getUnSatisfiedQueries();
     if(user.islogin){
       await getQuery(user.email.slice(0,user.email.indexOf("@")));
     }
@@ -482,7 +536,8 @@
       <Questions v-if="visibility.Questions" :user="user" :allQueries="allQueries" @activate="changeVisibility" @queryId="sendqId"/>
       <AnsweredQuestions v-if="visibility.answeredQuestions" :user="user" :answeredQueries="answeredQueries" @activate="changeVisibility" @queryId="sendqId" />
       <UnAnsweredQuestions v-if="visibility.unAnsweredQuestions" :user="user" :unAnsweredQueries="unAnsweredQueries" @activate="changeVisibility" @queryId="sendqId"/>
-      <AnswerQuestions v-if="visibility.AnswerQuestions" :user="user" :query="specificQuery" @answer="postAnswer" @delQuery="delQuery" @delAns="delAns" @blockQuery="blockQuery"/>
+      <UnSatisfiedQuestions v-if="visibility.unSatisfiedQueries" :unSatisfiedQueries="unSatisfiedQueries" @activate="changeVisibility" @queryId="sendqId"/>
+      <AnswerQuestions v-if="visibility.AnswerQuestions" :user="user" :query="specificQuery" @answer="postAnswer" @delQuery="delQuery" @delAns="delAns" @blockQuery="blockQuery" @activate="changeVisibility" @updateSatRate="updateSatisfactoryRate"/>
     </div>
     <div v-if="visibility.Login" class="fixed inset-0 bg-black opacity-80 flex justify-center items-center z-50">
       <Login @activate="changeVisibility" @uId="checkLogin"/>

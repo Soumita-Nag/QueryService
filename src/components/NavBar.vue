@@ -7,6 +7,7 @@
         <span @click="showQuestions" class="hover:text-blue-600 cursor-pointer transition-colors" v-if="!props.user.islogin || props.user.role=='user'">Questions</span>
         <span @click="showUnAnsweresQuestions" class="hover:text-blue-600 cursor-pointer transition-colors" v-if="props.user.islogin && props.user.role=='admin'">Unanswered Questions</span>
         <span @click="showAnsweredQuestions" class="hover:text-blue-600 cursor-pointer transition-colors" v-if="props.user.islogin && props.user.role=='admin'">Answered Questions</span>
+        <span @click="showUnSatisfiedQuestions" class="block hover:text-blue-600 cursor-pointer" v-if="props.user.role=='admin'">Unsatisfied Questions</span>
         <!-- <span @click="showContact" class="hover:text-blue-600 cursor-pointer transition-colors">Contact Us</span> -->
       </div>
       <div class="hidden md:flex gap-6 text-gray-700 font-medium text-base items-center">
@@ -36,6 +37,7 @@
       <span @click="showQuestions" class="block hover:text-blue-600 cursor-pointer" v-if="props.user.role=='user'">Questions</span>
       <span @click="showUnAnsweresQuestions" class="block hover:text-blue-600 cursor-pointer" v-if="props.user.role=='admin'">Unanswered Questions</span>
       <span @click="showAnsweredQuestions" class="block hover:text-blue-600 cursor-pointer" v-if="props.user.role=='admin'">Answered Questions</span>
+      <span @click="showUnSatisfiedQuestions" class="block hover:text-blue-600 cursor-pointer" v-if="props.user.role=='admin'">Unsatisfied Questions</span>
       <!-- <span @click="showContact" class="block hover:text-blue-600 cursor-pointer">Contact Us</span> -->
       
       <span v-if="!islogin">
@@ -81,6 +83,9 @@ import { defineProps,ref } from 'vue';
     }
     const showAnsweredQuestions=()=>{
       emit('activate',true,'answeredQuestions');
+    }
+    const showUnSatisfiedQuestions=()=>{
+      emit('activate',true,'unSatisfiedQueries');
     }
 </script>
 <style scoped>
