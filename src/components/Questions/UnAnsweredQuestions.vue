@@ -1,6 +1,6 @@
 <template>
   <div class="w-full max-w-2xl mx-auto space-y-4 pt-20">
-   <div class="cursor-pointer space-y-4 bg-white shadow-md rounded-xl p-4" v-for="p in props.unAnsweredQueries.slice().reverse()" :key="p.queryId">
+   <div class="cursor-pointer space-y-4 bg-white shadow-md rounded-xl p-4" v-for="p in props.unAnsweredQueries" :key="p.queryId">
     <div @click="showAnswer(p)" class="space-y-4 ">
     <div>
       <h1 class="text-2xl font-bold text-gray-800">{{ p.queryTitle }}</h1>
