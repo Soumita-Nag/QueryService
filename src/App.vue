@@ -230,11 +230,16 @@
       contentType: "application/json",
       data: JSON.stringify(payload),
       // data: {val},
-      success: async(data1)=>{
-        toast.success("Query submitted successfully");
-        console.log("Success: "+ data1);
-        await getAllQuery();
-        await getQuery(user.email.slice(0,user.email.indexOf("@")));
+      success: async(data,txtstatus,jqXHR)=>{
+        if(jqXHR.status==200){
+          toast.success("Query submitted successfully");
+          console.log("Success: "+ data1);
+          await getAllQuery();
+          await getQuery(user.email.slice(0,user.email.indexOf("@")));
+        }
+        else if(jqXHR.status==201){
+          toast.error("Query Already Exists!!");
+        }
       },
       error:(err)=>{
         toast.error("Error submitting the query");
@@ -533,7 +538,7 @@
 <template>
   <div class="relative min-h-screen select-none">
     <div :class="{'blur-sm pointer-events-none':visibility.Login || visibility.Signup || visibility.ForgetPassword || visibility.ResetPassword}">
-      <NavBar @activate="changeVisibility" :islogin="user.islogin" :user="user" />
+      <NavBar @activate="changeVisibility" :visibility="visibility" :islogin="user.islogin" :user="user" />
       <HomePage @activate="changeVisibility" v-if="visibility.HomePage" :islogin="user.islogin" :allQueries="allQueries" @queryId="sendqId"/>
       <askQueries v-if="visibility.AskQueries" :user="user" :query="query"  @addQuery="addQuery" @activate="changeVisibility" @queryId="sendqId"/>
       <Questions v-if="visibility.Questions" :user="user" :allQueries="allQueries" @activate="changeVisibility" @queryId="sendqId"/>

@@ -10,10 +10,14 @@
           <input
             type="text" @keyup.enter="addTags"
             v-model="tag"
+            list="tagSugg"
             id="tags"
             placeholder="Enter tags"
             class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
+          <datalist id="tagSugg">
+            <option v-for="t in tagSugg" :value="t"></option>
+          </datalist>
           <button
             type="button"
             @click="addTags"
@@ -68,6 +72,34 @@ var queryTitle=ref("");
 const props=defineProps({
     user:Object,
 })
+const tagSugg=ref(
+  [
+  // Programming & Tech
+  "JavaScript", "Python", "Java", "C++", "React", "Node.js", "Web Development", "AI", "Machine Learning", "Android", "iOS", "Cloud", "DevOps", "Cybersecurity",
+
+  // Healthcare & Medicine
+  "Nutrition", "Mental Health", "Fitness", "Yoga", "COVID-19", "Diabetes", "Heart Disease", "First Aid", "Dentistry", "Dermatology", "Vaccines", "Sleep",
+
+  // Science & Environment
+  "Physics", "Chemistry", "Biology", "Astronomy", "Ecology", "Genetics", "Space", "Climate Change", "Geology", "Oceanography",
+
+  // Art & Culture
+  "Painting", "Drawing", "Photography", "Sculpture", "Music", "Dance", "Theater", "Film", "Design", "Literature", "Fashion", "Crafts",
+
+  // Sports & Recreation
+  "Football", "Cricket", "Basketball", "Tennis", "Swimming", "Badminton", "Hiking", "Running", "Golf", "Table Tennis",
+
+  // History & Geography
+  "Ancient", "Medieval", "Modern", "World War II", "Mythology", "India", "Europe", "Asia", "Maps", "Capitals", "Monuments",
+
+  // Education & Career
+  "Mathematics", "Economics", "Business", "Startups", "Marketing", "Leadership", "Scholarships", "Internships", "Online Courses", "Exams",
+
+  // General Knowledge & Misc
+  "Trivia", "Technology", "Quotes", "Current Affairs", "Languages", "Travel", "Food", "Space Science", "Robotics", "Ethics", "Environmentalism",
+  "Programming","Healthcare","Science","Art","Sports","History","Geography","Business","Education","Technology","General Knowledge","Environment","Travel","Food","Music","Literature","Finance","Fashion","Politics","Mythology","Space","Engineering","Mathematics","Law","Psychology","Philosophy","Religion","Languages"
+]
+);
 const emit=defineEmits(['addQuery']);
 const AddQuery=()=>{
     const date=new Date();
