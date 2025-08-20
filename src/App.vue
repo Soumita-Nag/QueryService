@@ -371,8 +371,9 @@
         $.ajax({
           url: backEndUrl+"unSatisfiedQueries",
           method: "GET",
-          success: (data) => {
+          success: async(data) => {
             resolve(data);
+            await getUnSatisfiedQueries();
           },
           error: (err) => {
             reject(err);
@@ -413,6 +414,7 @@
         await getAllQuery();
         await getAnsweredQuery();
         await getUnAnsweredQuery();
+        await getUnSatisfiedQueries();
         await getQuery(user.email.slice(0,user.email.indexOf("@")));
       },
       error:(err)=>{
@@ -431,6 +433,7 @@
         await getAllQuery();
         await getAnsweredQuery();
         await getUnAnsweredQuery();
+        await getUnSatisfiedQueries();
       },
       error:(err)=>{
         toast.success("Error Blocking Query");
