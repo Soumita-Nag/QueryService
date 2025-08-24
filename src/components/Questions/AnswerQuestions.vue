@@ -69,7 +69,7 @@
           <span class=" select-none">{{ index+1 }}. </span> {{ ans.answer }}
         </span>
         
-        <span v-if="props.user.role==='admin'">
+        <span v-if="props.user.role==='admin' && props.islogin">
           <svg @click="delAns(ans)" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-red-500 cursor-pointer" viewBox="0 0 24 24" fill="currentColor">
               <path d="M9 3V4H4V6H5V19C5 20.1 5.9 21 7 21H17C18.1 21 19 20.1 19 19V6H20V4H15V3H9ZM7 6H17V19H7V6Z" />
               <path d="M9 8H11V17H9V8ZM13 8H15V17H13V8Z" />
@@ -114,6 +114,7 @@ const toast=useToast();
     const props=defineProps({
         user:Object,
         query:Object,
+        islogin:Boolean
     })
     const emit=defineEmits(['answer','delQuery','delAns','blockQuery','activate','updateSatRate']);
     const postAnswer=()=>{

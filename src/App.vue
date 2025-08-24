@@ -580,7 +580,7 @@
       <AnsweredQuestions v-if="visibility.answeredQuestions" :user="user" :answeredQueries="answeredQueries" @activate="changeVisibility" @queryId="sendqId" />
       <UnAnsweredQuestions v-if="visibility.unAnsweredQuestions" :user="user" :unAnsweredQueries="unAnsweredQueries" @activate="changeVisibility" @queryId="sendqId"/>
       <UnSatisfiedQuestions v-if="visibility.unSatisfiedQueries" :unSatisfiedQueries="unSatisfiedQueries" @activate="changeVisibility" @queryId="sendqId"/>
-      <AnswerQuestions v-if="visibility.AnswerQuestions" :user="user" :query="specificQuery" @answer="postAnswer" @delQuery="delQuery" @delAns="delAns" @blockQuery="blockQuery" @activate="changeVisibility" @updateSatRate="updateSatisfactoryRate"/>
+      <AnswerQuestions v-if="visibility.AnswerQuestions" :user="user" :query="specificQuery" @answer="postAnswer" :islogin="user.islogin" @delQuery="delQuery" @delAns="delAns" @blockQuery="blockQuery" @activate="changeVisibility" @updateSatRate="updateSatisfactoryRate"/>
       <SearchQuestions v-if="visibility.SearchQuestions" @searchQuery="searchQueries" :searchQuery="searchQuery" @activate="changeVisibility" @queryId="sendqId"/>
     </div>
     <div v-if="visibility.Login" class="fixed inset-0 bg-black opacity-80 flex justify-center items-center z-50">
