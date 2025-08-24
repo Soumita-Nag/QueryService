@@ -72,6 +72,7 @@
       visibility.Questions=!newVisibility;
       visibility.AnswerQuestions=!newVisibility;
       visibility.unSatisfiedQueries=!newVisibility;
+      visibility.SearchQuestions=!newVisibility;
     }
     if(source==='Signup'){
       visibility.Signup=newVisibility;
@@ -82,6 +83,7 @@
         visibility.HomePage=true
         visibility.AnswerQuestions=false;
         visibility.Questions=false;
+        visibility.SearchQuestions=false;
       }
     }
     if(source==='Questions'){
@@ -89,6 +91,7 @@
       visibility.HomePage=!newVisibility;
       visibility.AskQueries=!newVisibility;
       visibility.AnswerQuestions=!newVisibility;
+      visibility.SearchQuestions=!newVisibility;
     }
     if(source==='answeredQuestions'){
       visibility.answeredQuestions=newVisibility;
@@ -97,6 +100,7 @@
       visibility.AskQueries=!newVisibility;
       visibility.AnswerQuestions=!newVisibility;
       visibility.unSatisfiedQueries=!newVisibility;
+      visibility.SearchQuestions=!newVisibility;
     }
     if(source==='unSatisfiedQueries'){
       visibility.unSatisfiedQueries=newVisibility;
@@ -105,6 +109,7 @@
       visibility.AskQueries=!newVisibility;
       visibility.AnswerQuestions=!newVisibility;
       visibility.answeredQuestions=!newVisibility;
+      visibility.SearchQuestions=!newVisibility;
     }
     if(source==='unAnsweredQuestions'){
       visibility.unAnsweredQuestions=newVisibility;
@@ -113,6 +118,7 @@
       visibility.AskQueries=!newVisibility;
       visibility.AnswerQuestions=!newVisibility;
       visibility.unSatisfiedQueries=!newVisibility;
+      visibility.SearchQuestions=!newVisibility;
     }
     if(source==='Logout'){
       user.islogin=false;
@@ -125,6 +131,7 @@
       visibility.unAnsweredQuestions=false;
       visibility.AskQueries=false;
       visibility.AnswerQuestions=false;
+      visibility.SearchQuestions=false;
       visibility.unSatisfiedQueries=!newVisibility;
       updateUserLocalStorage();
 
@@ -137,6 +144,7 @@
       visibility.AskQueries=!newVisibility;
       visibility.AnswerQuestions=newVisibility;
       visibility.unSatisfiedQueries=!newVisibility;
+      visibility.SearchQuestions=!newVisibility;
     }
     if(source==='ForgetPassword'){
       // alert(newVisibility)
@@ -517,7 +525,28 @@
     })
     }
   }
-
+  const searchQuery=ref([]);
+  const searchQueries=async(sq)=>{
+    // console.log(sq.query+" "+sq.tags);
+    try {
+      const data = await new Promise((resolve, reject) => {
+        $.ajax({
+          url: backEndUrl+"searchQueries?searchQuery=" + sq.query+"&searchTag="+sq.tags,
+          method: "GET",
+          success: (data) => {
+            resolve(data);
+          },
+          error: (err) => {
+            reject(err);
+          }
+        });
+      });
+      searchQuery.value = data;
+      console.log(searchQuery);
+    } catch (err) {
+      console.error("Error fetching query:", err);
+    }
+  };
   var specificQuery=ref("");
   const sendqId=(q)=>{
       specificQuery=q;
@@ -552,7 +581,7 @@
       <UnAnsweredQuestions v-if="visibility.unAnsweredQuestions" :user="user" :unAnsweredQueries="unAnsweredQueries" @activate="changeVisibility" @queryId="sendqId"/>
       <UnSatisfiedQuestions v-if="visibility.unSatisfiedQueries" :unSatisfiedQueries="unSatisfiedQueries" @activate="changeVisibility" @queryId="sendqId"/>
       <AnswerQuestions v-if="visibility.AnswerQuestions" :user="user" :query="specificQuery" @answer="postAnswer" @delQuery="delQuery" @delAns="delAns" @blockQuery="blockQuery" @activate="changeVisibility" @updateSatRate="updateSatisfactoryRate"/>
-      <SearchQuestions/>
+      <SearchQuestions v-if="visibility.SearchQuestions" @searchQuery="searchQueries" :searchQuery="searchQuery" @activate="changeVisibility" @queryId="sendqId"/>
     </div>
     <div v-if="visibility.Login" class="fixed inset-0 bg-black opacity-80 flex justify-center items-center z-50">
       <Login @activate="changeVisibility" @uId="checkLogin"/>
