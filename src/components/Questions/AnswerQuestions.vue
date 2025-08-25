@@ -49,7 +49,7 @@
       <!-- Category -->
       <div>
         <button class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm font-semibold mr-4" v-for="cat in props.query.category">
-          {{ cat }}
+          <span @click="showSimilarQueries(cat)"class="cursor-pointer">{{ cat }}</span>
         </button>
         <div class="text-xs text-gray-500 pt-2">
           {{ props.query.userId }} asked on {{ props.query.date }} at {{ props.query.time }}
@@ -116,7 +116,7 @@ const toast=useToast();
         query:Object,
         islogin:Boolean
     })
-    const emit=defineEmits(['answer','delQuery','delAns','blockQuery','activate','updateSatRate']);
+    const emit=defineEmits(['answer','searchQuery','delQuery','delAns','blockQuery','activate','updateSatRate']);
     const postAnswer=()=>{
       const date=new Date();
       const day=date.getDate();
@@ -171,6 +171,14 @@ const toast=useToast();
     }
     const updateSatisfactoryRate=(id)=>{
       emit('updateSatRate',[id,rate.value[id]]);
+    }
+    const showSimilarQueries=(cat)=>{
+      const searchQuery={
+        query:"",
+        tags:cat,
+      }
+      emit('searchQuery',searchQuery);
+      emit('activate',true,'SameTagQuestions');
     }
     onMounted(async()=>{
       await getAllAnswers(props.query.queryId);
