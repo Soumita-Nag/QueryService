@@ -1,6 +1,38 @@
 <template>
-  <div class="w-full max-w-2xl mx-auto space-y-4 pt-20">
-   <div class="cursor-pointer space-y-4 bg-white shadow-md rounded-xl p-4" v-for="p in props.allQueries.slice().reverse()" :key="p.queryId">
+  <div class="w-full max-w-[90rem] mx-auto space-y-2 pt-22">
+    <div class="relative w-full">
+      <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z" />
+        </svg>
+      </span>
+      <input
+        v-model="search"
+        type="text"
+        placeholder="Search queries..."
+        class="w-full pl-10 pr-4 py-3 border-none rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 placeholder-gray-400"
+        @keyup="fetchQueries"
+      />
+    </div>
+
+    <div class="relative w-full mt-3">
+      <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M3 7a4 4 0 014-4h4.586a1 1 0 01.707.293l7.414 7.414a2 2 0 010 2.828l-4.586 4.586a2 2 0 01-2.828 0L3.293 11.707A1 1 0 013 11V7z" />
+        </svg>
+      </span>
+      <input
+        v-model="tags"
+        type="text"
+        placeholder="Enter tags (comma separated)"
+        class="w-full pl-10 pr-4 py-3 border-none rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200 placeholder-gray-400"
+        @keyup="fetchQueries"
+      />
+    </div>
+
+
+  <div v-if="props.searchQuery.length > 0">
+   <div class="cursor-pointer space-y-4 bg-white shadow-md rounded-xl p-4 mb-4" v-for="p in props.searchQuery" :key="p.queryId">
     <div @click="showAnswer(p)" class="space-y-4 ">
     <div>
       <h1 class="text-2xl font-bold text-gray-800">{{ p.queryTitle }}</h1>
@@ -34,17 +66,31 @@
     </div>
    </div>
    </div>
+   </div>
+   <p v-else class="text-gray-500">No queries found.</p>
   </div>
 </template>
 <script setup>
-    const props=defineProps({
-        allQueries:Array,
-    })
-    const emit=defineEmits(['activate','queryId']);
-    const showAnswer=(query)=>{
-        emit('activate',true,'AnswerQuestions');
-        emit('queryId',query);
-    }
+import { ref, onMounted } from "vue";
+const emit=defineEmits(['searchQuery','activate','queryId'])
+const search = ref("");
+const tags = ref("");    
+
+const props=defineProps({
+  searchQuery:Array,
+})
+const fetchQueries = () => {
+  const searchQuery={
+    query:search.value,
+    tags:tags.value
+  }
+  emit('searchQuery',searchQuery);
+};
+const showAnswer=(query)=>{
+  emit('activate',true,'AnswerQuestions');
+  emit('queryId',query);
+}
+onMounted(fetchQueries);
 </script>
 <style scoped>
     

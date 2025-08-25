@@ -8,8 +8,6 @@
         <span @click="showUnAnsweresQuestions" class="hover:text-blue-600 cursor-pointer transition-colors" v-if="props.user.islogin && props.user.role=='admin'">Unanswered</span>
         <span @click="showAnsweredQuestions" class="hover:text-blue-600 cursor-pointer transition-colors" v-if="props.user.islogin && props.user.role=='admin'">Answered</span>
         <span @click="showUnSatisfiedQuestions" class="block hover:text-blue-600 cursor-pointer" v-if="props.user.islogin && props.user.role=='admin'">Unsatisfied</span>
-        <!-- <span @click="showContact" class="hover:text-blue-600 cursor-pointer transition-colors">Contact Us</span> -->
-        <button type="button" v-if="props.visibility.Questions" class=" cursor-pointer" @click="searchQuery">🔍</button>
       </div>
       <div class="hidden md:flex gap-6 text-gray-700 font-medium text-base items-center">
         <template v-if="!islogin">

@@ -11,7 +11,6 @@
   import UnSatisfiedQuestions from './components/Questions/UnSatisfiedQuestions.vue';
   import ForgetPassword from './components/ForgetPassword.vue';
   import ResetPassword from './components/ResetPassword.vue';
-  import SearchQuestions from './components/Questions/SearchQuestions.vue';
 
   import { onBeforeMount, onMounted, reactive,ref } from 'vue';
   import { useToast } from 'vue-toastification';
@@ -41,6 +40,10 @@
   var unAnsweredQueries=ref([]);
   var unSatisfiedQueries=ref([]);
   var recoverEmail=ref("");
+  const demoSearchQuery=ref({
+    query:"",
+    tags:"",
+  })
 
   const visibility=reactive({
     HomePage:true,
@@ -54,7 +57,6 @@
     ForgetPassword:false,
     ResetPassword:false,
     unSatisfiedQueries:false,
-    SearchQuestions:false,
   })
   const changeVisibility=async(newVisibility,source)=>{
     if(source==='AskQueries'){
@@ -72,7 +74,6 @@
       visibility.Questions=!newVisibility;
       visibility.AnswerQuestions=!newVisibility;
       visibility.unSatisfiedQueries=!newVisibility;
-      visibility.SearchQuestions=!newVisibility;
     }
     if(source==='Signup'){
       visibility.Signup=newVisibility;
@@ -83,7 +84,6 @@
         visibility.HomePage=true
         visibility.AnswerQuestions=false;
         visibility.Questions=false;
-        visibility.SearchQuestions=false;
       }
     }
     if(source==='Questions'){
@@ -91,7 +91,6 @@
       visibility.HomePage=!newVisibility;
       visibility.AskQueries=!newVisibility;
       visibility.AnswerQuestions=!newVisibility;
-      visibility.SearchQuestions=!newVisibility;
     }
     if(source==='answeredQuestions'){
       visibility.answeredQuestions=newVisibility;
@@ -100,7 +99,6 @@
       visibility.AskQueries=!newVisibility;
       visibility.AnswerQuestions=!newVisibility;
       visibility.unSatisfiedQueries=!newVisibility;
-      visibility.SearchQuestions=!newVisibility;
     }
     if(source==='unSatisfiedQueries'){
       visibility.unSatisfiedQueries=newVisibility;
@@ -109,7 +107,6 @@
       visibility.AskQueries=!newVisibility;
       visibility.AnswerQuestions=!newVisibility;
       visibility.answeredQuestions=!newVisibility;
-      visibility.SearchQuestions=!newVisibility;
     }
     if(source==='unAnsweredQuestions'){
       visibility.unAnsweredQuestions=newVisibility;
@@ -118,7 +115,6 @@
       visibility.AskQueries=!newVisibility;
       visibility.AnswerQuestions=!newVisibility;
       visibility.unSatisfiedQueries=!newVisibility;
-      visibility.SearchQuestions=!newVisibility;
     }
     if(source==='Logout'){
       user.islogin=false;
@@ -131,7 +127,6 @@
       visibility.unAnsweredQuestions=false;
       visibility.AskQueries=false;
       visibility.AnswerQuestions=false;
-      visibility.SearchQuestions=false;
       visibility.unSatisfiedQueries=!newVisibility;
       updateUserLocalStorage();
 
@@ -144,7 +139,6 @@
       visibility.AskQueries=!newVisibility;
       visibility.AnswerQuestions=newVisibility;
       visibility.unSatisfiedQueries=!newVisibility;
-      visibility.SearchQuestions=!newVisibility;
     }
     if(source==='ForgetPassword'){
       // alert(newVisibility)
@@ -153,10 +147,6 @@
     }
     if(source==='ResetPassword'){
       visibility.ResetPassword=newVisibility;
-    }
-    if(source==='SearchQuestions'){
-      visibility.SearchQuestions=newVisibility;
-      visibility.Questions=!newVisibility;
     }
   }
   const checkLogin=(uId)=>{
@@ -564,6 +554,7 @@
     await getAnsweredQuery();
     await getUnAnsweredQuery();
     await getUnSatisfiedQueries();
+    await searchQueries(demoSearchQuery.value);
     if(user.islogin){
       await getQuery(user.email.slice(0,user.email.indexOf("@")));
     }
@@ -576,12 +567,11 @@
       <NavBar @activate="changeVisibility" :visibility="visibility" :islogin="user.islogin" :user="user" />
       <HomePage @activate="changeVisibility" v-if="visibility.HomePage" :islogin="user.islogin" :allQueries="allQueries" @queryId="sendqId"/>
       <askQueries v-if="visibility.AskQueries" :user="user" :query="query"  @addQuery="addQuery" @activate="changeVisibility" @queryId="sendqId"/>
-      <Questions v-if="visibility.Questions" :user="user" :allQueries="allQueries" @activate="changeVisibility" @queryId="sendqId"/>
+      <Questions v-if="visibility.Questions" :user="user" @searchQuery="searchQueries" :searchQuery="searchQuery" @activate="changeVisibility" @queryId="sendqId"/>
       <AnsweredQuestions v-if="visibility.answeredQuestions" :user="user" :answeredQueries="answeredQueries" @activate="changeVisibility" @queryId="sendqId" />
       <UnAnsweredQuestions v-if="visibility.unAnsweredQuestions" :user="user" :unAnsweredQueries="unAnsweredQueries" @activate="changeVisibility" @queryId="sendqId"/>
       <UnSatisfiedQuestions v-if="visibility.unSatisfiedQueries" :unSatisfiedQueries="unSatisfiedQueries" @activate="changeVisibility" @queryId="sendqId"/>
       <AnswerQuestions v-if="visibility.AnswerQuestions" :user="user" :query="specificQuery" @answer="postAnswer" :islogin="user.islogin" @delQuery="delQuery" @delAns="delAns" @blockQuery="blockQuery" @activate="changeVisibility" @updateSatRate="updateSatisfactoryRate"/>
-      <SearchQuestions v-if="visibility.SearchQuestions" @searchQuery="searchQueries" :searchQuery="searchQuery" @activate="changeVisibility" @queryId="sendqId"/>
     </div>
     <div v-if="visibility.Login" class="fixed inset-0 bg-black opacity-80 flex justify-center items-center z-50">
       <Login @activate="changeVisibility" @uId="checkLogin"/>
